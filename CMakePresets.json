@@ -1,0 +1,50 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 24,
+        "patch": 0
+    },
+
+    "configurePresets": [
+        {
+            "name": "debug",
+            "displayName": "GCC Debug",
+            "generator": "MinGW Makefiles",
+            "binaryDir": "${sourceDir}/build/gcc-debug",
+
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_C_COMPILER": "C:/compiler/gcc/bin/gcc.exe",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+
+            }
+        },
+
+        {
+            "name": "release",
+            "displayName": "GCC Release",
+            "generator": "MinGW Makefiles",
+            "binaryDir": "${sourceDir}/build/gcc-release",
+
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_C_COMPILER": "C:/compiler/gcc/bin/gcc.exe",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+
+            }
+        }
+    ],
+
+    "buildPresets": [
+        {
+            "name": "debug",
+            "configurePreset": "debug"
+        },
+
+        {
+            "name": "release",
+            "configurePreset": "release"
+        }
+    ]
+}
