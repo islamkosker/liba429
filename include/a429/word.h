@@ -2,19 +2,21 @@
 #define A429_WORD_H
 #include <stdint.h>
 
-#define A429_LABEL_SHIFT    0U
-#define A429_SDI_SHIFT      8U
-#define A429_DATA_SHIFT     10U
-#define A429_SSM_SHIFT      29U
-#define A429_PARITY_SHIFT   31U
+#define A429_LABEL_SHIFT 0U
+#define A429_SDI_SHIFT 8U
+#define A429_DATA_SHIFT 10U
+#define A429_SSM_SHIFT 29U
+#define A429_PARITY_SHIFT 31U
 
-#define A429_LABEL_MASK     0xFFU
-#define A429_SDI_MASK       0x03U
-#define A429_DATA_MASK      0x7FFFFU
-#define A429_SSM_MASK       0x03U
-#define A429_PARITY_MASK    0x01U
+#define A429_LABEL_MASK 0xFFU
+#define A429_SDI_MASK 0x03U
+#define A429_DATA_MASK 0x7FFFFU
+#define A429_SSM_MASK 0x03U
+#define A429_PARITY_MASK 0x01U
+#define A429_WORD_MASK 0x7FFFFFFFU
+#define A429_PAYLOAD_MASK 0xFFFFFF00U
 
-#define A429_WORD_MASK      0x7FFFFFFFU
+extern const uint8_t a429_bit_reverse_table[];
 
 /**
  * @brief  Extracts the Label field (ARINC 429 bits 1-8 / C bits 0-7).
@@ -76,5 +78,43 @@ static inline uint8_t a429_get_parity(uint32_t word) {
  */
 static inline uint32_t a429_get_without_parity(uint32_t word) {
   return word & A429_WORD_MASK;
+}
+
+/**
+ * @brief Converts a hardware-format ARINC 429 word into software format.
+ *
+ * Reverses the 8-bit Label field while leaving the remaining payload
+ * (bits 9-32) unchanged. This is useful when the hardware transmits or stores
+ * the Label field with reversed bit order.
+ *
+ * @param hw_word Raw 32-bit ARINC 429 word received from hardware.
+ * @return 32-bit ARINC word with the Label field converted to software format.
+ *
+ * @note Only the Label field (bits 1-8) is modified. All other bits are copied
+ * unchanged.
+ */
+static inline uint32_t a429_unpack_word(uint32_t hw_word) {
+  uint8_t reversed_label = (uint8_t)(hw_word & A429_LABEL_MASK);
+  uint32_t payload = hw_word & A429_PAYLOAD_MASK;
+  return payload | a429_bit_reverse_table[reversed_label];
+}
+
+/**
+ * @brief Converts a software-format ARINC 429 word into hardware format.
+ *
+ * Reverses the 8-bit Label field while leaving the remaining payload
+ * (bits 9-32) unchanged. This prepares the word for transmission or storage
+ * by hardware that expects the Label bits in reversed order.
+ *
+ * @param word 32-bit ARINC 429 word in software format.
+ * @return 32-bit ARINC word with the Label field converted to hardware format.
+ *
+ * @note Only the Label field (bits 1-8) is modified. All other bits are copied
+ * unchanged.
+ */
+static inline uint32_t a429_pack_word(uint32_t word) {
+  uint8_t label = (uint8_t)(word & A429_LABEL_MASK);
+  uint32_t payload = word & A429_PAYLOAD_MASK;
+  return payload | a429_bit_reverse_table[label];
 }
 #endif

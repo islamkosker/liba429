@@ -4,9 +4,10 @@ This document tracks the implementation status of the library.
 --------------------------------------------------------------------------------
 
 ### Current Focus
-*  [ ] Label bit-reversal (Lookup Table)
-*  [ ] Pack API
-*  [ ] Unpack API
+#### BNR
+*  [ ] Two's complement decoding
+*  [ ] Configurable bit width
+*  [ ] Scale factor support
 
 --------------------------------------------------------------------------------
 
@@ -48,17 +49,17 @@ This document tracks the implementation status of the library.
 #### Bit Reversal
 **Status:**  🚧 In Progress
 **Planned**
-*  [ ] 256-entry lookup table
-*  [ ] Hardware ↔ Logical label conversion
-*  [ ] Public API
+*  [x] 256-entry lookup table
+*  [x] Hardware ↔ Logical label conversion
+*  [x] Public API
 
 --------------------------------------------------------------------------------
 
 #### Pack / Unpack
 **Status:**  ⏳ Planned
 **Planned**
-*  [ ] Hardware → Logical word conversion
-*  [ ] Logical → Hardware word conversion
+*  [x] Hardware → Logical word conversion
+*  [x] Logical → Hardware word conversion
 
 --------------------------------------------------------------------------------
 

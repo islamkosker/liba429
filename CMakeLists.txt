@@ -7,6 +7,7 @@ set(CMAKE_C_STANDARD 11)
 add_library(a429 STATIC
     src/parity/parity.c
     src/core/a429.c
+    src/core/word.c
 )
 
 target_include_directories(a429
