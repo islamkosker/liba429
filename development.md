@@ -4,10 +4,11 @@ This document tracks the implementation status of the library.
 --------------------------------------------------------------------------------
 
 ### Current Focus
-#### BNR
-*  [ ] Two's complement decoding
-*  [ ] Configurable bit width
-*  [ ] Scale factor support
+#### Word Fields
+*  [ ] Label setter
+*  [ ] SDI setter
+*  [ ] Data setter
+*  [ ] SSM setter
 
 --------------------------------------------------------------------------------
 
@@ -66,9 +67,9 @@ This document tracks the implementation status of the library.
 ### Decoders
 **Status:**  ⏳ Planned
 #### BNR
-*  [ ] Two's complement decoding
-*  [ ] Configurable bit width
-*  [ ] Scale factor support
+*  [x] Two's complement decoding
+*  [x] Configurable bit width
+*  [x] Scale factor support
 #### BCD
 *  [ ] Packed BCD decoding
 *  [ ] 3-bit MSB support

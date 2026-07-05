@@ -29,4 +29,8 @@ typedef enum {
 } a429_ssm_disc_t;
 
 
+
+#define A429_ERR_NO     0
+#define A429_ERR_DECODE 128
+
 #endif
