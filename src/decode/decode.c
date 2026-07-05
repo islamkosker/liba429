@@ -1,6 +1,6 @@
 #include "a429/bnr.h"
 #include "a429/types.h"
-#include "word.h"
+#include "a429/word.h"
 #include <stdint.h>
 
 #define DATA_BIT_COUNT 19

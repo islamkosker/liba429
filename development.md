@@ -48,7 +48,7 @@ This document tracks the implementation status of the library.
 --------------------------------------------------------------------------------
 
 #### Bit Reversal
-**Status:**  🚧 In Progress
+**Status:**  ✅ Complete
 **Planned**
 *  [x] 256-entry lookup table
 *  [x] Hardware ↔ Logical label conversion
@@ -57,7 +57,7 @@ This document tracks the implementation status of the library.
 --------------------------------------------------------------------------------
 
 #### Pack / Unpack
-**Status:**  ⏳ Planned
+**Status:**  ✅ Complete
 **Planned**
 *  [x] Hardware → Logical word conversion
 *  [x] Logical → Hardware word conversion
@@ -65,7 +65,7 @@ This document tracks the implementation status of the library.
 --------------------------------------------------------------------------------
 
 ### Decoders
-**Status:**  ⏳ Planned
+Status: 🚧 In Progress Planned
 #### BNR
 *  [x] Two's complement decoding
 *  [x] Configurable bit width
@@ -131,7 +131,7 @@ This document tracks the implementation status of the library.
 **Status:**  ⏳ Planned
 #### Core
 *  [ ] Word API
-*  [ ] Parity
+*  [x] Parity
 *  [ ] Bit reversal
 #### Decoder
 *  [ ] BNR
