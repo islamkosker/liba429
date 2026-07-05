@@ -18,4 +18,12 @@ uint8_t a429_compute_parity(uint32_t word);
  */
 bool a429_verify_parity(uint32_t word);
 
+
+/**
+ * @brief  Computes and sets the odd parity bit for a 32-bit ARINC 429 word.
+ * @param  word  The 32-bit ARINC 429 word. The parity bit (bit 32) is ignored during computation.
+ * @return The ARINC 429 word with the correct odd parity bit set.
+ */
+uint32_t a429_apply_parity(uint32_t word);
+
 #endif // LIBA429_PARITY_H

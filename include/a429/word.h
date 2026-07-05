@@ -1,5 +1,20 @@
 #ifndef A429_WORD_H
 #define A429_WORD_H
+#include <stdint.h>
+
+#define A429_LABEL_SHIFT    0U
+#define A429_SDI_SHIFT      8U
+#define A429_DATA_SHIFT     10U
+#define A429_SSM_SHIFT      29U
+#define A429_PARITY_SHIFT   31U
+
+#define A429_LABEL_MASK     0xFFU
+#define A429_SDI_MASK       0x03U
+#define A429_DATA_MASK      0x7FFFFU
+#define A429_SSM_MASK       0x03U
+#define A429_PARITY_MASK    0x01U
+
+#define A429_WORD_MASK      0x7FFFFFFFU
 
 /**
  * @brief  Extracts the Label field (ARINC 429 bits 1-8 / C bits 0-7).
@@ -8,8 +23,9 @@
  * @note   Label is the first 8 bits. Octal representation is standard for this
  * field.
  */
-#define A429_GET_LABEL(word) ((uint8_t)((word) & 0x000000FFU))
-
+static inline uint8_t a429_get_label(uint32_t word) {
+  return word & A429_LABEL_MASK;
+}
 /**
  * @brief  Extracts the SDI (Source/Destination Identifier) field (ARINC 429
  * bits 9-10 / C bits 8-9).
@@ -17,7 +33,9 @@
  * @return 2-bit value (0-3).
  * @note   Used to identify the source or destination of the data.
  */
-#define A429_GET_SDI(word) ((uint8_t)(((word) >> 8) & 0x00000003U))
+static inline uint8_t a429_get_sdi(uint32_t word) {
+  return (uint8_t)(word >> A429_SDI_SHIFT) & A429_SDI_MASK;
+}
 
 /**
  * @brief  Extracts the DATA field (ARINC 429 bits 11-29 / C bits 10-28).
@@ -26,8 +44,9 @@
  * @note   This field's interpretation depends on the coding type (BNR, BCD, or
  * Discrete).
  */
-#define A429_GET_DATA(word) ((uint32_t)(((word) >> 10) & 0x0007FFFFU))
-
+static inline uint32_t a429_get_data(uint32_t word) {
+  return (word >> A429_DATA_SHIFT) & A429_DATA_MASK;
+}
 /**
  * @brief  Extracts the SSM (Sign/Status Matrix) field (ARINC 429 bits 30-31 / C
  * bits 29-30).
@@ -35,7 +54,9 @@
  * @return 2-bit value.
  * @note   Indicates hardware condition, operational mode, or validity of data.
  */
-#define A429_GET_SSM(word) ((uint8_t)(((word) >> 29) & 0x00000003U))
+static inline uint8_t a429_get_ssm(uint32_t word) {
+  return (uint8_t)(word >> A429_SSM_SHIFT) & A429_SSM_MASK;
+}
 
 /**
  * @brief  Extracts the PARITY field (ARINC 429 bit 32 / C bit 31).
@@ -43,7 +64,9 @@
  * @return 1-bit value.
  * @note   ARINC 429 typically uses Odd Parity for error detection.
  */
-#define A429_GET_PARITY(word) ((uint8_t)(((word) >> 31) & 0x00000001U))
+static inline uint8_t a429_get_parity(uint32_t word) {
+  return (uint8_t)(word >> A429_PARITY_SHIFT) & A429_PARITY_MASK;
+}
 
 /**
  * @brief  Extracts all bits except the parity bit (ARINC 429 bits 1-31).
@@ -51,6 +74,7 @@
  * @return 31-bit value used for parity calculation or data integrity checks.
  * @note   Masks out the 32nd bit (MSB / Parity bit).
  */
-#define A429_GET_WITHOUT_PARITY(word) ((uint32_t)((word) & 0x7FFFFFFFU))
-
+static inline uint32_t a429_get_without_parity(uint32_t word) {
+  return word & A429_WORD_MASK;
+}
 #endif
