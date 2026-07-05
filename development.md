@@ -1,235 +1,177 @@
-# liba429 Development
-
+### liba429 Development
 This document tracks the implementation status of the library.
 
----
+--------------------------------------------------------------------------------
 
-# Current Focus
+### Current Focus
+*  [ ] Label bit-reversal (Lookup Table)
+*  [ ] Pack API
+*  [ ] Unpack API
 
-- [ ] Label bit-reversal (Lookup Table)
-- [ ] Pack API
-- [ ] Unpack API
+--------------------------------------------------------------------------------
 
----
-
-# Core
-
-## Types
-
-**Status:** ✅ Complete
-
+### Core
+#### Types
+**Status:**  ✅ Complete
 **Files**
-
-- `include/a429/types.h`
-
+*  include/a429/types.h
 **Implemented**
+*  [x] Core library types
+*  [x] ARINC 429 word types
+*  [x] SSM enumerations
 
-- [x] Core library types
-- [x] ARINC 429 word types
-- [x] SSM enumerations
+--------------------------------------------------------------------------------
 
----
-
-## Word API
-
-**Status:** ✅ Complete
-
+#### Word API
+**Status:**  ✅ Complete
 **Files**
-
-- `include/a429/word.h`
-
+*  include/a429/word.h
 **Implemented**
+*  [x] Label getter
+*  [x] SDI getter
+*  [x] Data getter
+*  [x] SSM getter
+*  [x] Parity getter
 
-- [x] Label getter
-- [x] SDI getter
-- [x] Data getter
-- [x] SSM getter
-- [x] Parity getter
+--------------------------------------------------------------------------------
 
----
-
-## Parity
-
-**Status:** ✅ Complete
-
+#### Parity
+**Status:**  ✅ Complete
 **Files**
-
-- `include/a429/parity.h`
-
+*  include/a429/parity.h
 **Implemented**
+*  [x] Odd parity verification
+*  [x] a429_check_parity()
 
-- [x] Odd parity verification
-- [x] `a429_check_parity()`
+--------------------------------------------------------------------------------
 
----
-
-## Bit Reversal
-
-**Status:** 🚧 In Progress
-
+#### Bit Reversal
+**Status:**  🚧 In Progress
 **Planned**
+*  [ ] 256-entry lookup table
+*  [ ] Hardware ↔ Logical label conversion
+*  [ ] Public API
 
-- [ ] 256-entry lookup table
-- [ ] Hardware ↔ Logical label conversion
-- [ ] Public API
+--------------------------------------------------------------------------------
 
----
-
-## Pack / Unpack
-
-**Status:** ⏳ Planned
-
+#### Pack / Unpack
+**Status:**  ⏳ Planned
 **Planned**
+*  [ ] Hardware → Logical word conversion
+*  [ ] Logical → Hardware word conversion
 
-- [ ] Hardware → Logical word conversion
-- [ ] Logical → Hardware word conversion
+--------------------------------------------------------------------------------
 
----
+### Decoders
+**Status:**  ⏳ Planned
+#### BNR
+*  [ ] Two's complement decoding
+*  [ ] Configurable bit width
+*  [ ] Scale factor support
+#### BCD
+*  [ ] Packed BCD decoding
+*  [ ] 3-bit MSB support
+*  [ ] Variable digit count
+#### Discrete
+*  [ ] Bit extraction
+*  [ ] Individual discrete decoding
+#### SSM
+*  [ ] BNR interpretation
+*  [ ] BCD interpretation
+*  [ ] Discrete interpretation
 
-# Decoders
+--------------------------------------------------------------------------------
 
-**Status:** ⏳ Planned
+### Encoders
+**Status:**  ⏳ Planned
+#### Word Fields
+*  [ ] Label setter
+*  [ ] SDI setter
+*  [ ] Data setter
+*  [ ] SSM setter
+#### BNR
+*  [ ] Float → BNR
+#### BCD
+*  [ ] Integer → Packed BCD
+#### Discrete
+*  [ ] Bit packing
+#### Parity
+*  [ ] a429_apply_parity()
 
-## BNR
+--------------------------------------------------------------------------------
 
-- [ ] Two's complement decoding
-- [ ] Configurable bit width
-- [ ] Scale factor support
+### Label Dictionary
+**Status:**  ⏳ Planned
+#### Descriptor
+*  [ ] Label
+*  [ ] Name
+*  [ ] Encoding
+*  [ ] Bit width
+*  [ ] Resolution
+*  [ ] Offset
+*  [ ] Unit
+#### API
+*  [ ] a429_find_label()
 
-## BCD
+--------------------------------------------------------------------------------
 
-- [ ] Packed BCD decoding
-- [ ] 3-bit MSB support
-- [ ] Variable digit count
+### High-Level API
+**Status:**  ⏳ Planned
+*  [ ] Automatic decoder
+*  [ ] Automatic encoder
+*  [ ] SDI filtering and matching (a429_match_sdi)
+*  [ ] Human-readable output
+*  [ ] Error reporting
 
-## Discrete
+--------------------------------------------------------------------------------
 
-- [ ] Bit extraction
-- [ ] Individual discrete decoding
+### Testing
+**Status:**  ⏳ Planned
+#### Core
+*  [ ] Word API
+*  [ ] Parity
+*  [ ] Bit reversal
+#### Decoder
+*  [ ] BNR
+*  [ ] BCD
+*  [ ] Discrete
+*  [ ] SSM
+#### Encoder
+*  [ ] BNR
+*  [ ] BCD
+*  [ ] Discrete
+*  [ ] Parity generation
+#### Integration
+*  [ ] Encode → Decode
+*  [ ] Decode → Encode
+*  [ ] Hardware compatibility
+*  [ ] Reference ARINC vectors
+#### Edge Cases & Error Handling
+*  [ ] Invalid BCD digits handling (Hex A-F limits)
+*  [ ] BNR out-of-bounds limits (exceeding Scale Factor)
+*  [ ] Null word / Empty bus handling
 
-## SSM
+--------------------------------------------------------------------------------
 
-- [ ] BNR interpretation
-- [ ] BCD interpretation
-- [ ] Discrete interpretation
+### Williamsburg Protocol (Optional)
+**Status:**  ⏳ Planned
+*  [ ] RTS
+*  [ ] CTS
+*  [ ] ACK
+*  [ ] SOT
+*  [ ] EOT
+*  [ ] State machine
+*  [ ] Block transfer
 
----
+--------------------------------------------------------------------------------
 
-# Encoders
-
-**Status:** ⏳ Planned
-
-## Word Fields
-
-- [ ] Label setter
-- [ ] SDI setter
-- [ ] Data setter
-- [ ] SSM setter
-
-## BNR
-
-- [ ] Float → BNR
-
-## BCD
-
-- [ ] Integer → Packed BCD
-
-## Discrete
-
-- [ ] Bit packing
-
-## Parity
-
-- [ ] `a429_apply_parity()`
-
----
-
-# Label Dictionary
-
-**Status:** ⏳ Planned
-
-## Descriptor
-
-- [ ] Label
-- [ ] Name
-- [ ] Encoding
-- [ ] Bit width
-- [ ] Resolution
-- [ ] Offset
-- [ ] Unit
-
-## API
-
-- [ ] `a429_find_label()`
-
----
-
-# High-Level API
-
-**Status:** ⏳ Planned
-
-- [ ] Automatic decoder
-- [ ] Automatic encoder
-- [ ] Human-readable output
-- [ ] Error reporting
-
----
-
-# Testing
-
-**Status:** ⏳ Planned
-
-## Core
-
-- [ ] Word API
-- [ ] Parity
-- [ ] Bit reversal
-
-## Decoder
-
-- [ ] BNR
-- [ ] BCD
-- [ ] Discrete
-- [ ] SSM
-
-## Encoder
-
-- [ ] BNR
-- [ ] BCD
-- [ ] Discrete
-- [ ] Parity generation
-
-## Integration
-
-- [ ] Encode → Decode
-- [ ] Decode → Encode
-- [ ] Hardware compatibility
-- [ ] Reference ARINC vectors
-
----
-
-# Williamsburg Protocol (Optional)
-
-**Status:** ⏳ Planned
-
-- [ ] RTS
-- [ ] CTS
-- [ ] ACK
-- [ ] SOT
-- [ ] EOT
-- [ ] State machine
-- [ ] Block transfer
-
----
-
-# Future Ideas
-
-- [ ] Pretty printer
-- [ ] CSV label importer
-- [ ] JSON label importer
-- [ ] YAML label importer
-- [ ] Signal monitor
-- [ ] Logging utilities
-- [ ] PCAP export
-- [ ] Benchmark suite
-- [ ] Documentation website
+### Future Ideas
+*  [ ] Pretty printer
+*  [ ] CSV label importer
+*  [ ] JSON label importer
+*  [ ] YAML label importer
+*  [ ] Signal monitor
+*  [ ] Logging utilities
+*  [ ] PCAP export
+*  [ ] Benchmark suite
+*  [ ] Documentation website

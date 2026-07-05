@@ -1,17 +1,11 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(liba429
-    VERSION 0.1.0
-    LANGUAGES C)
+project(liba429 C)
 
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_C_EXTENSIONS OFF)
 
 add_library(a429 STATIC
-    src/parity/parity.c)
-
-target_sources(a429 PRIVATE
+    src/parity/parity.c
     src/core/a429.c
 )
 
@@ -21,17 +15,32 @@ target_include_directories(a429
         ${PROJECT_SOURCE_DIR}/include/a429
 )
 
-
+message("Build type: ${CMAKE_BUILD_TYPE}")
 target_compile_options(a429 PRIVATE
-    -Wall
-    -Wextra
-    -Wpedantic
+    -Wall -Wextra -Wpedantic
 )
 
-add_executable(a429_test
-    examples/main.c
-)
+# -------------------------
+# TEST FLAG (FIXED NAME)
+# -------------------------
+option(LIBA429_ENABLE_TESTS "Enable unit tests" ON)
 
-target_link_libraries(a429_test
-    PRIVATE a429
+if(LIBA429_ENABLE_TESTS)
+    include(CTest)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
+
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(ACTIVE_DIR ${CMAKE_SOURCE_DIR}/build/debug)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(ACTIVE_DIR ${CMAKE_SOURCE_DIR}/build/release)
+else()
+    set(ACTIVE_DIR ${CMAKE_SOURCE_DIR}/build/test)
+endif()
+
+add_custom_target(set_active ALL
+    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_SOURCE_DIR}/build/active
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ${ACTIVE_DIR} ${CMAKE_SOURCE_DIR}/build/active
 )
