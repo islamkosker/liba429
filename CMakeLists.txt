@@ -9,6 +9,7 @@ add_library(a429 STATIC
     src/core/a429.c
     src/core/word.c
     src/decode/decode.c
+    src/encode/encode.c
 )
 
 target_include_directories(a429

@@ -4,12 +4,10 @@ This document tracks the implementation status of the library.
 --------------------------------------------------------------------------------
 
 ### Current Focus
-#### Word Fields
-*  [ ] Label setter
-*  [ ] SDI setter
-*  [ ] Data setter
-*  [ ] SSM setter
-
+#### BCD
+*  [ ] Packed BCD decoding
+*  [ ] 3-bit MSB support
+*  [ ] Variable digit count
 --------------------------------------------------------------------------------
 
 ### Core
@@ -87,12 +85,12 @@ Status: 🚧 In Progress Planned
 ### Encoders
 **Status:**  ⏳ Planned
 #### Word Fields
-*  [ ] Label setter
-*  [ ] SDI setter
-*  [ ] Data setter
-*  [ ] SSM setter
+*  [x] Label setter
+*  [x] SDI setter
+*  [x] Data setter
+*  [x] SSM setter
 #### BNR
-*  [ ] Float → BNR
+*  [x] Float → BNR
 #### BCD
 *  [ ] Integer → Packed BCD
 #### Discrete

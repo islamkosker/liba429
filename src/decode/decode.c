@@ -3,12 +3,11 @@
 #include "a429/word.h"
 #include <stdint.h>
 
-#define DATA_BIT_COUNT 19
 
 double a429_decode_bnr(uint32_t word, uint8_t bit_count, double scale_factor,
                        int8_t *error_code) {
 
-  if (!bit_count || bit_count > DATA_BIT_COUNT)
+  if (!bit_count || bit_count > A429_DATA_BIT_COUNT)
     *error_code = -A429_ERR_DECODE;
   else {
     *error_code = A429_ERR_NO;
@@ -16,7 +15,7 @@ double a429_decode_bnr(uint32_t word, uint8_t bit_count, double scale_factor,
   }
 
   uint32_t raw_data = a429_get_data(word);
-  uint8_t unused_bits = DATA_BIT_COUNT - bit_count;
+  uint8_t unused_bits = A429_DATA_BIT_COUNT - bit_count;
 
   uint32_t bnr_value = raw_data >> unused_bits;
 

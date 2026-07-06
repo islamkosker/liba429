@@ -30,7 +30,9 @@ typedef enum {
 
 
 
-#define A429_ERR_NO     0
-#define A429_ERR_DECODE 128
+#define A429_ERR_NO             0
+#define A429_ERR_DECODE         127
+#define A429_ERR_ENCODE         126
+#define A429_ERR_OUT_OF_RANGE   125
 
 #endif
