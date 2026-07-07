@@ -8,8 +8,7 @@ add_library(a429 STATIC
     src/parity/parity.c
     src/core/a429.c
     src/core/word.c
-    src/decode/decode.c
-    src/encode/encode.c
+    src/bnr/bnr.c
 )
 
 target_include_directories(a429
