@@ -11,6 +11,8 @@ add_library(a429 STATIC
     src/bnr/bnr.c
 )
 
+target_link_libraries(a429 PRIVATE m)
+
 target_include_directories(a429
     PUBLIC
         ${PROJECT_SOURCE_DIR}/include
@@ -35,14 +37,14 @@ endif()
 
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(ACTIVE_DIR ${CMAKE_SOURCE_DIR}/build/debug)
+    set(ACTIVE_DIR ${CMAKE_SOURCE_DIR}/.build/debug)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    set(ACTIVE_DIR ${CMAKE_SOURCE_DIR}/build/release)
+    set(ACTIVE_DIR ${CMAKE_SOURCE_DIR}/.build/release)
 else()
-    set(ACTIVE_DIR ${CMAKE_SOURCE_DIR}/build/test)
+    set(ACTIVE_DIR ${CMAKE_SOURCE_DIR}/.build/test)
 endif()
 
 add_custom_target(set_active ALL
-    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_SOURCE_DIR}/build/active
-    COMMAND ${CMAKE_COMMAND} -E create_symlink ${ACTIVE_DIR} ${CMAKE_SOURCE_DIR}/build/active
+    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_SOURCE_DIR}/.build/active
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ${ACTIVE_DIR} ${CMAKE_SOURCE_DIR}/.build/active
 )

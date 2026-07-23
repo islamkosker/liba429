@@ -44,4 +44,4 @@ endfunction()
 set(TEST_CASES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cases")
 
 add_liba429_test(test_parity "${TEST_CASES_DIR}/parity/test_parity.c")
-add_liba429_test(test_parity "${TEST_CASES_DIR}/decode/test_decode_bnr.c")
+add_liba429_test(test_decode_bnr "${TEST_CASES_DIR}/decode/test_decode_bnr.c")

@@ -8,24 +8,24 @@
     "configurePresets": [
         {
             "name": "debug",
-            "displayName": "GCC Debug",
-            "generator": "MinGW Makefiles",
-            "binaryDir": "${sourceDir}/build/debug",
+            "displayName": "Debug",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/.build/debug",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_C_COMPILER": "C:/compiler/gcc/bin/gcc.exe",
+                "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
                 "LIBA429_ENABLE_TESTS": "OFF"
             }
         },
         {
             "name": "release",
-            "displayName": "GCC Release",
-            "generator": "MinGW Makefiles",
-            "binaryDir": "${sourceDir}/build/release",
+            "displayName": "Release",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/.build/release",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "CMAKE_C_COMPILER": "C:/compiler/gcc/bin/gcc.exe",
+                "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
                 "LIBA429_ENABLE_TESTS": "OFF"
             }
@@ -33,11 +33,11 @@
         {
             "name": "test",
             "displayName": "Test",
-            "generator": "MinGW Makefiles",
-            "binaryDir": "${sourceDir}/build/test",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/.build/test",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Test",
-                "CMAKE_C_COMPILER": "C:/compiler/gcc/bin/gcc.exe",
+                "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
                 "LIBA429_ENABLE_TESTS": "ON"
             }

@@ -4,7 +4,7 @@
     Copyright (c) 2007-26 Mike Karlesky, Mark VanderVoord, & Greg Williams
     SPDX-License-Identifier: MIT
 ========================================================================= */
-
+#include "unity_config.h"
 #include "unity.h"
 
 #ifndef UNITY_PROGMEM
