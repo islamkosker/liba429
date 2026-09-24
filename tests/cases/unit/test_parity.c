@@ -1,22 +1,14 @@
 #include "unity.h"
 #include "a429/parity.h"
 
-
 void setUp(void)
 {
-    // optional
 }
 
 void tearDown(void)
 {
-    // optional
 }
 
-
-/*
- * Test 1:
- * All zeros word → parity should be correct after apply
- */
 void test_parity_all_zero(void)
 {
     uint32_t word = 0x00000000;
@@ -25,11 +17,6 @@ void test_parity_all_zero(void)
 
     TEST_ASSERT_TRUE(a429_verify_parity(word));
 }
-
-/*
- * Test 2:
- * All ones word → parity must still be valid after fix
- */
 void test_parity_all_ones(void)
 {
     uint32_t word = 0xFFFFFFFF;
@@ -39,10 +26,6 @@ void test_parity_all_ones(void)
     TEST_ASSERT_TRUE(a429_verify_parity(word));
 }
 
-/*
- * Test 3:
- * Known pattern
- */
 void test_parity_known_pattern(void)
 {
     uint32_t word = 0x12345678;

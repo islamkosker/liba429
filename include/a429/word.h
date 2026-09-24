@@ -18,7 +18,6 @@
 
 #define A429_DATA_BIT_COUNT 19
 
-
 extern const uint8_t a429_bit_reverse_table[];
 
 /**
@@ -28,7 +27,8 @@ extern const uint8_t a429_bit_reverse_table[];
  * @note   Label is the first 8 bits. Octal representation is standard for this
  * field.
  */
-static inline uint8_t a429_get_label(uint32_t word) {
+static inline uint8_t a429_get_label(const uint32_t word)
+{
   return word & A429_LABEL_MASK;
 }
 /**
@@ -38,7 +38,8 @@ static inline uint8_t a429_get_label(uint32_t word) {
  * @return 2-bit value (0-3).
  * @note   Used to identify the source or destination of the data.
  */
-static inline uint8_t a429_get_sdi(uint32_t word) {
+static inline uint8_t a429_get_sdi(const uint32_t word)
+{
   return (uint8_t)(word >> A429_SDI_SHIFT) & A429_SDI_MASK;
 }
 
@@ -49,7 +50,8 @@ static inline uint8_t a429_get_sdi(uint32_t word) {
  * @note   This field's interpretation depends on the coding type (BNR, BCD, or
  * Discrete).
  */
-static inline uint32_t a429_get_data(uint32_t word) {
+static inline uint32_t a429_get_data(const uint32_t word)
+{
   return (word >> A429_DATA_SHIFT) & A429_DATA_MASK;
 }
 /**
@@ -59,7 +61,8 @@ static inline uint32_t a429_get_data(uint32_t word) {
  * @return 2-bit value.
  * @note   Indicates hardware condition, operational mode, or validity of data.
  */
-static inline uint8_t a429_get_ssm(uint32_t word) {
+static inline uint8_t a429_get_ssm(const uint32_t word)
+{
   return (uint8_t)(word >> A429_SSM_SHIFT) & A429_SSM_MASK;
 }
 
@@ -69,7 +72,8 @@ static inline uint8_t a429_get_ssm(uint32_t word) {
  * @return 1-bit value.
  * @note   ARINC 429 typically uses Odd Parity for error detection.
  */
-static inline uint8_t a429_get_parity(uint32_t word) {
+static inline uint8_t a429_get_parity(const uint32_t word)
+{
   return (uint8_t)(word >> A429_PARITY_SHIFT) & A429_PARITY_MASK;
 }
 
@@ -79,7 +83,8 @@ static inline uint8_t a429_get_parity(uint32_t word) {
  * @return 31-bit value used for parity calculation or data integrity checks.
  * @note   Masks out the 32nd bit (MSB / Parity bit).
  */
-static inline uint32_t a429_get_without_parity(uint32_t word) {
+static inline uint32_t a429_get_without_parity(const uint32_t word)
+{
   return word & A429_WORD_MASK;
 }
 
@@ -102,8 +107,9 @@ static inline uint32_t a429_get_without_parity(uint32_t word) {
  * @param  word: Pointer to the 32-bit raw ARINC word.
  * @param  label: 8-bit unsigned label value to set.
  */
-static inline void a429_set_label(uint32_t *word, uint8_t label) {
-    *word = (*word & ~A429_LABEL_MASK) | (label & A429_LABEL_MASK);
+static inline void a429_set_label(uint32_t *word, uint8_t label)
+{
+  *word = (*word & ~A429_LABEL_MASK) | (label & A429_LABEL_MASK);
 }
 
 /**
@@ -111,9 +117,10 @@ static inline void a429_set_label(uint32_t *word, uint8_t label) {
  * @param  word: Pointer to the 32-bit raw ARINC word.
  * @param  sdi: 2-bit SDI value (0-3).
  */
-static inline void a429_set_sdi(uint32_t *word, uint8_t sdi) {
-    *word = (*word & ~(A429_SDI_MASK << A429_SDI_SHIFT)) | 
-            (((uint32_t)sdi & A429_SDI_MASK) << A429_SDI_SHIFT);
+static inline void a429_set_sdi(uint32_t *word, uint8_t sdi)
+{
+  *word = (*word & ~(A429_SDI_MASK << A429_SDI_SHIFT)) |
+          (((uint32_t)sdi & A429_SDI_MASK) << A429_SDI_SHIFT);
 }
 
 /**
@@ -121,9 +128,10 @@ static inline void a429_set_sdi(uint32_t *word, uint8_t sdi) {
  * @param  word: Pointer to the 32-bit raw ARINC word.
  * @param  data: 19-bit data payload.
  */
-static inline void a429_set_data(uint32_t *word, uint32_t data) {
-    *word = (*word & ~(A429_DATA_MASK << A429_DATA_SHIFT)) | 
-            ((data & A429_DATA_MASK) << A429_DATA_SHIFT);
+static inline void a429_set_data(uint32_t *word, uint32_t data)
+{
+  *word = (*word & ~(A429_DATA_MASK << A429_DATA_SHIFT)) |
+          ((data & A429_DATA_MASK) << A429_DATA_SHIFT);
 }
 
 /**
@@ -131,13 +139,14 @@ static inline void a429_set_data(uint32_t *word, uint32_t data) {
  * @param  word: Pointer to the 32-bit raw ARINC word.
  * @param  ssm: 2-bit SSM value.
  */
-static inline void a429_set_ssm(uint32_t *word, uint8_t ssm) {
-    *word = (*word & ~(A429_SSM_MASK << A429_SSM_SHIFT)) | 
-            (((uint32_t)ssm & A429_SSM_MASK) << A429_SSM_SHIFT);
+static inline void a429_set_ssm(uint32_t *word, uint8_t ssm)
+{
+  *word = (*word & ~(A429_SSM_MASK << A429_SSM_SHIFT)) |
+          (((uint32_t)ssm & A429_SSM_MASK) << A429_SSM_SHIFT);
 }
 
-
-static inline uint32_t a429_unpack_word(uint32_t hw_word) {
+static inline uint32_t a429_unpack_word(uint32_t hw_word)
+{
   uint8_t reversed_label = (uint8_t)(hw_word & A429_LABEL_MASK);
   uint32_t payload = hw_word & A429_PAYLOAD_MASK;
   return payload | a429_bit_reverse_table[reversed_label];
@@ -156,7 +165,8 @@ static inline uint32_t a429_unpack_word(uint32_t hw_word) {
  * @note Only the Label field (bits 1-8) is modified. All other bits are copied
  * unchanged.
  */
-static inline uint32_t a429_pack_word(uint32_t word) {
+static inline uint32_t a429_pack_word(const uint32_t word)
+{
   uint8_t label = (uint8_t)(word & A429_LABEL_MASK);
   uint32_t payload = word & A429_PAYLOAD_MASK;
   return payload | a429_bit_reverse_table[label];

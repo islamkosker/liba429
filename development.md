@@ -4,10 +4,12 @@ This document tracks the implementation status of the library.
 --------------------------------------------------------------------------------
 
 ### Current Focus
-#### BCD
-*  [ ] Packed BCD decoding
-*  [ ] 3-bit MSB support
-*  [ ] Variable digit count
+#### Discrete
+*  [ ] Bit extraction
+*  [ ] Individual discrete decoding
+
+#### Discrete
+*  [ ] Bit packing
 --------------------------------------------------------------------------------
 
 ### Core
@@ -69,9 +71,9 @@ Status: 🚧 In Progress Planned
 *  [x] Configurable bit width
 *  [x] Scale factor support
 #### BCD
-*  [ ] Packed BCD decoding
-*  [ ] 3-bit MSB support
-*  [ ] Variable digit count
+*  [x] Packed BCD decoding
+*  [x] 3-bit MSB support
+*  [x] Variable digit count
 #### Discrete
 *  [ ] Bit extraction
 *  [ ] Individual discrete decoding
@@ -92,11 +94,11 @@ Status: 🚧 In Progress Planned
 #### BNR
 *  [x] Float → BNR
 #### BCD
-*  [ ] Integer → Packed BCD
+*  [x] Integer → Packed BCD
 #### Discrete
 *  [ ] Bit packing
 #### Parity
-*  [ ] a429_apply_parity()
+*  [x] a429_apply_parity()
 
 --------------------------------------------------------------------------------
 
@@ -132,13 +134,13 @@ Status: 🚧 In Progress Planned
 *  [x] Parity
 *  [ ] Bit reversal
 #### Decoder
-*  [ ] BNR
-*  [ ] BCD
+*  [x] BNR
+*  [x] BCD
 *  [ ] Discrete
 *  [ ] SSM
 #### Encoder
-*  [ ] BNR
-*  [ ] BCD
+*  [x] BNR
+*  [x] BCD
 *  [ ] Discrete
 *  [ ] Parity generation
 #### Integration

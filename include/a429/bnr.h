@@ -2,6 +2,7 @@
 #define A429_BNR_H
 
 #include <stdint.h>
+
 /**
  * @brief   Decodes a BNR (Binary) formatted ARINC 429 word into a double value.
  * @param  word         The 32-bit raw ARINC word.
@@ -11,8 +12,8 @@
  * @param error_code    The error code
  * @return double       The decoded real-world value (e.g., altitude, speed).
  */
-double a429_decode_bnr(uint32_t word, uint8_t bit_count, double scale_factor,
-                       int8_t *error_code);
+double a429_decode_bnr(const uint32_t word, const uint8_t bit_count,
+                       const double scale_factor, int8_t *error_code);
 
 /**
  * @brief Encodes a double value into an ARINC 429 BNR word format.
@@ -23,6 +24,6 @@ double a429_decode_bnr(uint32_t word, uint8_t bit_count, double scale_factor,
  * @param scale_factor The scale factor for this parameter.
  * @param error_code Pointer to store the execution status.
  */
-void a429_encode_bnr(uint32_t *word, double value, uint8_t bit_count,
-                     double scale_factor, int8_t *error_code);
+void a429_encode_bnr(uint32_t *word, const double value, const uint8_t bit_count,
+                     const double scale_factor, int8_t *error_code);
 #endif

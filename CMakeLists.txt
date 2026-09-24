@@ -9,6 +9,8 @@ add_library(a429 STATIC
     src/core/a429.c
     src/core/word.c
     src/bnr/bnr.c
+    src/bcd/bcd.c
+
 )
 
 target_link_libraries(a429 PRIVATE m)

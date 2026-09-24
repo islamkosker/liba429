@@ -3,6 +3,7 @@ if(NOT LIBA429_ENABLE_TESTS)
 endif()
 
 set(UNITY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/unity")
+set(UTILS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/utils")
 
 # -------------------------
 # Unity 
@@ -11,10 +12,10 @@ add_library(unity STATIC
     "${UNITY_DIR}/unity.c"
 )
 
-# PUBLIC yaparak bu kütüphaneye bağlanan herkesin 
-# unity.h'ı doğrudan bulabilmesini sağlıyoruz.
 target_include_directories(unity PUBLIC
     "${UNITY_DIR}"
+    
+
 )
 
 # -------------------------
@@ -32,6 +33,8 @@ function(add_liba429_test name src)
     target_include_directories(${name} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
         "${UNITY_DIR}"
+        "${UTILS_DIR}"
+
 
     )
 
@@ -43,5 +46,6 @@ endfunction()
 # -------------------------
 set(TEST_CASES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cases")
 
-add_liba429_test(test_parity "${TEST_CASES_DIR}/parity/test_parity.c")
-add_liba429_test(test_decode_bnr "${TEST_CASES_DIR}/decode/test_decode_bnr.c")
+add_liba429_test(test_parity "${TEST_CASES_DIR}/unit/test_parity.c")
+add_liba429_test(test_bnr "${TEST_CASES_DIR}/unit/test_bnr.c")
+add_liba429_test(test_bcd "${TEST_CASES_DIR}/unit/test_bcd.c")
