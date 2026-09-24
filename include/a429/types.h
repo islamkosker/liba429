@@ -9,32 +9,12 @@ typedef bool a429_discrete_t;
 
 typedef enum
 {
-    A429_SSM_BNR_FAILURE = 0x00,         // 00: Failure Warning
-    A429_SSM_BNR_NO_COMPUTE_DATA = 0x01, // 01: No Computed Data
-    A429_SSM_BNR_FUNCTIONAL_TEST = 0x02, // 10: Functional Test
-    A429_SSM_BNR_NORMAL = 0x03           // 11: Normal Operation
-} a429_ssm_bnr_t;
-
-typedef enum
-{
-    A429_SSM_BCD_PLUS_NORTH_EAST = 0x00, // 00: Plus, North, East, Right, To, Above
-    A429_SSM_BCD_NO_COMPUTE_DATA = 0x01, // 01: No Computed Data
-    A429_SSM_BCD_FUNCTIONAL_TEST = 0x02, // 10: Functional Test
-    A429_SSM_BCD_MINUS_SOUTH_WEST = 0x03 // 11: Minus, South, West, Left, From, Below
-} a429_ssm_bcd_t;
-
-typedef enum
-{
-    A429_SSM_DISC_NORMAL = 0x00,          // 00: Verified Data, Normal Operation
-    A429_SSM_DISC_NO_COMPUTE_DATA = 0x01, // 01: No Computed Data
-    A429_SSM_DISC_FUNCTIONAL_TEST = 0x02, // 10: Functional Test
-    A429_SSM_DISC_FAILURE = 0x03          // 11: Failure Warning
-} a429_ssm_disc_t;
-
-#define A429_ERR_NO 0
-#define A429_ERR_DECODE 127
-#define A429_ERR_ENCODE 126
-#define A429_ERR_OUT_OF_RANGE 125
-#define A429_ERR_INVALID_BCD 124
+    A429_ERR_NO = 0,
+    A429_ERR_DECODE = 127,
+    A429_ERR_ENCODE = 126,
+    A429_ERR_OUT_OF_RANGE = 125,
+    A429_ERR_INVALID_BCD = 124,
+    A429_ERR_INVALID_BIT = 123
+} a429_error_t;
 
 #endif

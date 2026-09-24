@@ -9,14 +9,14 @@
  * @param  word: The 32-bit raw ARINC word (bit 31/parity bit is ignored).
  * @return The calculated parity bit (0 or 1) that makes the total '1' count ODD.
  */
-uint8_t a429_compute_parity(const uint32_t word);
+uint8_t a429_compute_parity(uint32_t word);
 
 /**
  * @brief  Verifies if the given 32-bit word has a valid Odd Parity.
  * @param  word: The 32-bit raw ARINC word.
  * @return true if parity is valid (total count of 1s is ODD), false otherwise.
  */
-bool a429_verify_parity(const uint32_t word);
+bool a429_verify_parity(uint32_t word);
 
 /**
  * @brief  Computes and sets the odd parity bit for a 32-bit ARINC 429 word.

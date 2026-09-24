@@ -7,8 +7,8 @@
 
 #include <stdio.h>
 
-double a429_decode_bnr(const uint32_t word, const uint8_t bit_count,
-                       const double scale_factor, int8_t *error_code)
+double a429_decode_bnr(a429_word_t word, uint8_t bit_count,
+                       double scale_factor, a429_error_t *error_code)
 {
 
   if (!bit_count || bit_count > A429_DATA_BIT_COUNT)
@@ -46,8 +46,8 @@ double a429_decode_bnr(const uint32_t word, const uint8_t bit_count,
   return (double)signed_value * resolution;
 }
 
-void a429_encode_bnr(uint32_t *word, const double value, const uint8_t bit_count,
-                     const double scale_factor, int8_t *error_code)
+void a429_encode_bnr(a429_word_t *word, double value, uint8_t bit_count,
+                     double scale_factor, a429_error_t *error_code)
 {
 
   if (bit_count < 1 || bit_count > A429_DATA_BIT_COUNT)

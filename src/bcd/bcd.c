@@ -8,14 +8,14 @@
 #define _4_BIT 0x0F
 #define MAX_BCD 79999U
 
-static uint8_t get_mask(const uint8_t idx)
+static uint8_t get_mask(uint8_t idx)
 {
 
     return (idx == LAST_NIBBLE_IDX) ? _3BIT : _4_BIT;
 }
 
-double a429_decode_bcd(const a429_word_t word, const uint8_t digit_count,
-                       const double resolution, int8_t *error_code)
+double a429_decode_bcd(a429_word_t word, uint8_t digit_count,
+                       double resolution, a429_error_t *error_code)
 {
     if (digit_count == 0 || digit_count > MAX_DIGIT)
     {
@@ -50,8 +50,8 @@ double a429_decode_bcd(const a429_word_t word, const uint8_t digit_count,
     return value * resolution;
 }
 
-void a429_encode_bcd(a429_word_t *word, const double value, const uint8_t digit_count,
-                     const double resolution, int8_t *error_code)
+void a429_encode_bcd(a429_word_t *word, double value, uint8_t digit_count,
+                     double resolution, a429_error_t *error_code)
 {
     if (digit_count == 0 || digit_count > MAX_DIGIT)
     {

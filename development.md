@@ -4,12 +4,10 @@ This document tracks the implementation status of the library.
 --------------------------------------------------------------------------------
 
 ### Current Focus
-#### Discrete
-*  [ ] Bit extraction
-*  [ ] Individual discrete decoding
-
-#### Discrete
-*  [ ] Bit packing
+#### SSM
+*  [ ] BNR interpretation
+*  [ ] BCD interpretation
+*  [ ] Discrete interpretation
 --------------------------------------------------------------------------------
 
 ### Core
@@ -75,8 +73,8 @@ Status: 🚧 In Progress Planned
 *  [x] 3-bit MSB support
 *  [x] Variable digit count
 #### Discrete
-*  [ ] Bit extraction
-*  [ ] Individual discrete decoding
+*  [x] Bit extraction
+*  [x] Individual discrete decoding
 #### SSM
 *  [ ] BNR interpretation
 *  [ ] BCD interpretation
@@ -96,7 +94,7 @@ Status: 🚧 In Progress Planned
 #### BCD
 *  [x] Integer → Packed BCD
 #### Discrete
-*  [ ] Bit packing
+*  [x] Bit packing
 #### Parity
 *  [x] a429_apply_parity()
 

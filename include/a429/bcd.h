@@ -1,6 +1,6 @@
 #ifndef A429_BCD_H
 #define A429_BCD_H
-#include <stddef.h>
+
 #include <stdint.h>
 #include "a429/types.h"
 
@@ -13,8 +13,8 @@
  * @return double       The decoded real-world value (e.g., altitude, speed).
  */
 
-double a429_decode_bcd(const a429_word_t word, const uint8_t digit_count,
-                       const double resolution, int8_t *error_code);
+double a429_decode_bcd(a429_word_t word, uint8_t digit_count,
+                       double resolution, a429_error_t *error_code);
 
 /**
  * @brief Encodes a double value into an ARINC 429 BCD (Binary code Decimal) word format.
@@ -24,7 +24,7 @@ double a429_decode_bcd(const a429_word_t word, const uint8_t digit_count,
  * @param resolution    Value resulation.
  * @param error_code    Pointer to store the execution status.
  */
-void a429_encode_bcd(a429_word_t *word, const double value, const uint8_t digit_count,
-                     const double resolution, int8_t *error_code);
+void a429_encode_bcd(a429_word_t *word, double value, uint8_t digit_count,
+                     double resolution, a429_error_t *error_code);
 
 #endif // A429_BCD_H
