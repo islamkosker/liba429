@@ -1,5 +1,6 @@
-#include "a429/bcd.h"
-#include "a429/word.h"
+#include "a429/a429_bcd.h"
+#include "a429/a429_word.h"
+
 #include <math.h>
 
 #define LAST_NIBBLE_IDX 4

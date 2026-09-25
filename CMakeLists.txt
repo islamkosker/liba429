@@ -5,11 +5,12 @@ project(liba429 C)
 set(CMAKE_C_STANDARD 11)
 
 add_library(a429 STATIC
-    src/parity/parity.c
-    src/core/a429.c
-    src/core/word.c
-    src/bnr/bnr.c
-    src/bcd/bcd.c
+
+    src/a429.c
+    src/a429_parity.c
+    src/a429_word.c
+    src/a429_bnr.c
+    src/a429_bcd.c
 
 )
 

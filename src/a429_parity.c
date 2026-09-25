@@ -1,5 +1,6 @@
-#include "a429/parity.h"
-#include "a429/word.h"
+#include "a429/a429_parity.h"
+#include "a429/a429_word.h"
+
 #include <stdint.h>
 
 static inline bool is_odd(uint32_t n) { return (n & 1U) != 0U; }

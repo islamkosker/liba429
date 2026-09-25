@@ -1,6 +1,6 @@
-#include <stdio.h>
-
 #include "a429.h"
+
+#include <stdio.h>
 
 const char *A429_VERSION = "0.1.0";
 

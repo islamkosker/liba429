@@ -2,7 +2,9 @@
 #define A429_BNR_H
 
 #include <stdint.h>
-#include "a429/types.h"
+#include "a429/a429_types.h"
+#include "a429_error.h"
+
 /**
  * @brief   Decodes a BNR (Binary) formatted ARINC 429 word into a double value.
  * @param  word         The 32-bit raw ARINC word.
@@ -26,4 +28,5 @@ double a429_decode_bnr(a429_word_t word, uint8_t bit_count,
  */
 void a429_encode_bnr(a429_word_t *word, double value, uint8_t bit_count,
                      double scale_factor, a429_error_t *error_code);
+
 #endif

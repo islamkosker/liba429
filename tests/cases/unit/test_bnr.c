@@ -1,5 +1,5 @@
 
-#include "a429/bnr.h"
+#include "a429/a429_bnr.h"
 #include "decode_mock.h"
 #define UNITY_INCLUDE_CONFIG_H
 
@@ -18,7 +18,7 @@ void test_bnr_invariant_randomized(void)
   {
     create_random_a429_bnr_word(&test_mock_word);
 
-    int8_t err_code = 0;
+    a429_error_t err_code = A429_ERR_NO;
     a429_encode_bnr(&test_mock_word.word, test_mock_word.value,
                     test_mock_word.bit_count, test_mock_word.scale, &err_code);
     if (err_code)

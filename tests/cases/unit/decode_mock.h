@@ -2,7 +2,7 @@
 #ifndef TEST_DECODE_MOCK
 #define TEST_DECODE_MOCK
 
-#include "a429/word.h"
+#include "a429/a429_word.h"
 #include <stdint.h>
 
 #include <stdlib.h>

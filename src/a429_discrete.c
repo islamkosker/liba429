@@ -1,7 +1,8 @@
-#include "a429/discrete.h"
+#include "a429/a429_discrete.h"
+#include <a429/a429_word.h>
+
 #include <stdint.h>
 #include <limits.h>
-#include <word.h>
 
 a429_discrete_t a429_get_discrete_bit(a429_word_t word, uint8_t bit_position)
 {

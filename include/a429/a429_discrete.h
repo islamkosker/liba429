@@ -2,7 +2,7 @@
 #define A429_DISCRETE_H
 
 #include <stdbool.h>
-#include <types.h>
+#include <a429_types.h>
 
 a429_discrete_t a429_get_discrete_bit(a429_word_t word, uint8_t bit_position);
 

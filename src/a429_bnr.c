@@ -1,11 +1,10 @@
-#include "a429/bnr.h"
-#include "a429/types.h"
-#include "a429/word.h"
+#include "a429/a429_bnr.h"
+#include "a429/a429_types.h"
+#include "a429/a429_word.h"
+
 #include <math.h>
 #include <stddef.h>
 #include <stdint.h>
-
-#include <stdio.h>
 
 double a429_decode_bnr(a429_word_t word, uint8_t bit_count,
                        double scale_factor, a429_error_t *error_code)

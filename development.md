@@ -4,10 +4,15 @@ This document tracks the implementation status of the library.
 --------------------------------------------------------------------------------
 
 ### Current Focus
-#### SSM
-*  [ ] BNR interpretation
-*  [ ] BCD interpretation
-*  [ ] Discrete interpretation
+**Status:**  🚧 In Progress Planned
+#### Descriptor
+*  [ ] Label
+*  [ ] Name
+*  [ ] Encoding
+*  [ ] Bit width
+*  [ ] Resolution
+*  [ ] Offset
+*  [ ] Unit
 --------------------------------------------------------------------------------
 
 ### Core
@@ -63,7 +68,7 @@ This document tracks the implementation status of the library.
 --------------------------------------------------------------------------------
 
 ### Decoders
-Status: 🚧 In Progress Planned
+Status: ✅ Complete
 #### BNR
 *  [x] Two's complement decoding
 *  [x] Configurable bit width
@@ -76,14 +81,14 @@ Status: 🚧 In Progress Planned
 *  [x] Bit extraction
 *  [x] Individual discrete decoding
 #### SSM
-*  [ ] BNR interpretation
-*  [ ] BCD interpretation
-*  [ ] Discrete interpretation
+*  [x] BNR interpretation
+*  [x] BCD interpretation
+*  [x] Discrete interpretation
 
 --------------------------------------------------------------------------------
 
 ### Encoders
-**Status:**  ⏳ Planned
+**Status:**  ✅ Complete
 #### Word Fields
 *  [x] Label setter
 *  [x] SDI setter
@@ -101,7 +106,7 @@ Status: 🚧 In Progress Planned
 --------------------------------------------------------------------------------
 
 ### Label Dictionary
-**Status:**  ⏳ Planned
+**Status:** 🚧 In Progress Planned
 #### Descriptor
 *  [ ] Label
 *  [ ] Name

@@ -1,4 +1,4 @@
-#include "a429/bcd.h"
+#include "a429/a429_bcd.h"
 #include "decode_mock.h"
 #define UNITY_INCLUDE_CONFIG_H
 
@@ -17,7 +17,7 @@ void test_bcd_invariant_randomized(void)
     {
         create_random_a429_bcd_word(&test_mock_word);
 
-        int8_t err_code = 0;
+        a429_error_t err_code = A429_ERR_NO;
 
         a429_encode_bcd(
             &test_mock_word.word, test_mock_word.value,
