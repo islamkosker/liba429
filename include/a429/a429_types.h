@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 typedef uint32_t a429_word_t;
+typedef uint32_t a429_wire_data_t;
 typedef bool a429_discrete_t;
 typedef double a429_value_t;
 
