@@ -11,6 +11,7 @@ add_library(a429 STATIC
     src/a429_word.c
     src/a429_bnr.c
     src/a429_bcd.c
+    src/a429_codec.c
 
 )
 

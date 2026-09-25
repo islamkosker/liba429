@@ -1,8 +1,12 @@
 
-#include "a429_codec.h"
 #include "a429_word.h"
+#include "a429_bnr.h"
+#include "a429_parity.h"
 
-static a429_error_t a429_bnr_decode_wrapper(const a429_word_t *word, a429_decode_result_t *result, const a429_label_dictionary_t *dict)
+#include "a429_codec.h"
+
+static a429_error_t a429_bnr_decode_wrapper(const a429_word_t *word, a429_decode_result_t *result,
+                                            const a429_label_dictionary_t *dict)
 {
 
     if (a429_get_label(*word) != dict->label)
@@ -24,7 +28,8 @@ static a429_error_t a429_bnr_decode_wrapper(const a429_word_t *word, a429_decode
     return A429_ERR_NO;
 }
 
-static a429_error_t a429_bnr_encode_wrapper(a429_word_t *word, a429_encode_params_t *params, const a429_label_dictionary_t *dict)
+static a429_error_t a429_bnr_encode_wrapper(a429_word_t *word, const a429_encode_params_t *params,
+                                            const a429_label_dictionary_t *dict)
 {
     if (!word || !params || !dict)
         return A429_ERR_INVALID_ARG;
@@ -42,6 +47,6 @@ static a429_error_t a429_bnr_encode_wrapper(a429_word_t *word, a429_encode_param
 }
 
 a429_codec_t a429_codec[A429_LABEL_TYPE_SIZE] = {
-    [A429_LABEL_BNR] = {.decode = a429_bnr_decode_wrapper, .encode = a429_bnr_encode_wrapper}
+    [A429_LABEL_BNR] = {.decode = &a429_bnr_decode_wrapper, .encode = &a429_bnr_encode_wrapper}
 
 };
