@@ -17,20 +17,20 @@ void a429_set_discrete_bit(a429_word_t *word, uint8_t bit_position, a429_discret
     a429_set_data(word, data);
 }
 
-uint32_t a429_get_discrete_field(a429_word_t word, uint8_t start_bit, uint8_t bit_width)
+uint32_t a429_get_discrete_field(a429_word_t word, uint8_t bit_offset, uint8_t bit_width)
 {
     a429_word_t data = a429_get_data(word);
-    return (data >> start_bit) & ((1U << bit_width) - 1U);
+    return (data >> bit_offset) & ((1U << bit_width) - 1U);
 }
 
-void a429_set_discrete_field(a429_word_t *word, uint8_t start_bit, uint8_t bit_width, uint32_t value)
+void a429_set_discrete_field(a429_word_t *word, uint8_t bit_offset, uint8_t bit_width, uint32_t value)
 {
 
     a429_word_t data = 0;
 
-    uint32_t mask = ((1U << bit_width) - 1U) << start_bit;
+    uint32_t mask = ((1U << bit_width) - 1U) << bit_offset;
     data &= ~mask;
-    data |= (value << start_bit) & mask;
+    data |= (value << bit_offset) & mask;
 
     a429_set_data(word, data);
 }

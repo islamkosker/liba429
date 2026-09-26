@@ -8,7 +8,7 @@
 
 typedef union a429_payload
 {
-    uint8_t discrete;
+    uint32_t discrete;
     a429_value_t value;
 } a429_payload_u;
 
@@ -22,7 +22,7 @@ typedef struct a429_word_fields
 typedef a429_word_fields_t a429_encode_params_t;
 typedef a429_word_fields_t a429_decode_result_t;
 
-typedef struct
+typedef struct a429_codec
 {
     a429_error_t (*encode)(
         a429_word_t *word,

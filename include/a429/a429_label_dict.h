@@ -13,12 +13,24 @@ typedef enum
 
 typedef struct
 {
+    uint8_t bit_offset;
+    uint8_t bit_width;
+} a429_discrete_field_t;
+typedef union encode_info
+{
+    a429_discrete_field_t discrete;
+    uint8_t bit_width;
+
+} encode_info_t;
+
+typedef struct
+{
     uint8_t label;
     uint16_t equipment_id;
     const char *name;
     const char *unit;
     a429_label_type_t ltype;
-    uint8_t bit_width;
+    encode_info_t encoding;
     uint32_t min_tx_us;
     uint32_t max_tx_us;
     double scale;
