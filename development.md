@@ -5,14 +5,13 @@ This document tracks the implementation status of the library.
 
 ### Current Focus
 **Status:**  🚧 In Progress Planned
-#### Descriptor
-*  [ ] Label
-*  [ ] Name
-*  [ ] Encoding
-*  [ ] Bit width
-*  [ ] Resolution
-*  [ ] Offset
-*  [ ] Unit
+### High-Level API
+**Status:**  ⏳ Planned
+*  [ ] Automatic decoder
+*  [ ] Automatic encoder
+*  [ ] SDI filtering and matching (a429_match_sdi)
+*  [ ] Human-readable output
+*  [ ] Error reporting
 --------------------------------------------------------------------------------
 
 ### Core
@@ -106,22 +105,22 @@ Status: ✅ Complete
 --------------------------------------------------------------------------------
 
 ### Label Dictionary
-**Status:** 🚧 In Progress Planned
+**Status:** ✅ Complete
 #### Descriptor
-*  [ ] Label
-*  [ ] Name
-*  [ ] Encoding
-*  [ ] Bit width
-*  [ ] Resolution
-*  [ ] Offset
-*  [ ] Unit
+*  [x] Label
+*  [x] Name
+*  [x] Encoding
+*  [x] Bit width
+*  [x] Resolution
+*  [x] Offset
+*  [x] Unit
 #### API
-*  [ ] a429_find_label()
+*  [x] a429_find_label() (O(1))
 
 --------------------------------------------------------------------------------
 
 ### High-Level API
-**Status:**  ⏳ Planned
+**Status:**  🚧 In Progress Planned
 *  [ ] Automatic decoder
 *  [ ] Automatic encoder
 *  [ ] SDI filtering and matching (a429_match_sdi)
