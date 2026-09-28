@@ -2,7 +2,7 @@
 #define A429_BCD_H
 
 #include <stdint.h>
-#include "a429/a429_types.h"
+#include "a429_types.h"
 #include "a429_error.h"
 
 /**

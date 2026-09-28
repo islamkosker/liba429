@@ -1,5 +1,5 @@
-#include "a429/a429_bcd.h"
-#include "a429/a429_word.h"
+#include "a429_bcd.h"
+#include "a429_word.h"
 
 #include <math.h>
 

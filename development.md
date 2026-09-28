@@ -18,7 +18,7 @@ This document tracks the implementation status of the library.
 #### Types
 **Status:**  ✅ Complete
 **Files**
-*  include/a429/types.h
+*  include/types.h
 **Implemented**
 *  [x] Core library types
 *  [x] ARINC 429 word types
@@ -29,7 +29,7 @@ This document tracks the implementation status of the library.
 #### Word API
 **Status:**  ✅ Complete
 **Files**
-*  include/a429/word.h
+*  include/word.h
 **Implemented**
 *  [x] Label getter
 *  [x] SDI getter
@@ -42,7 +42,7 @@ This document tracks the implementation status of the library.
 #### Parity
 **Status:**  ✅ Complete
 **Files**
-*  include/a429/parity.h
+*  include/parity.h
 **Implemented**
 *  [x] Odd parity verification
 *  [x] a429_check_parity()

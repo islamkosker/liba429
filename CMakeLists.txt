@@ -6,12 +6,13 @@ set(CMAKE_C_STANDARD 11)
 
 add_library(a429 STATIC
 
-    src/a429.c
-    src/a429_parity.c
-    src/a429_word.c
     src/a429_bnr.c
     src/a429_bcd.c
     src/a429_codec.c
+    src/a429_discrete.c
+    src/a429_parity.c
+    src/a429_word.c
+    src/a429_protocol.c
 
 )
 
@@ -20,7 +21,8 @@ target_link_libraries(a429 PRIVATE m)
 target_include_directories(a429
     PUBLIC
         ${PROJECT_SOURCE_DIR}/include
-        ${PROJECT_SOURCE_DIR}/include/a429
+    PRIVATE
+        ${PROJECT_SOURCE_DIR}/src/a429
 )
 
 message("Build type: ${CMAKE_BUILD_TYPE}")

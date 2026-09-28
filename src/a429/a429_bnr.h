@@ -1,9 +1,9 @@
 #ifndef A429_BNR_H
 #define A429_BNR_H
 
-#include <stdint.h>
-#include "a429/a429_types.h"
+#include "a429_types.h"
 #include "a429_error.h"
+#include <stdint.h>
 
 /**
  * @brief   Decodes a BNR (Binary) formatted ARINC 429 word into a double value.
