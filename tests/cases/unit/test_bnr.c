@@ -19,28 +19,29 @@ void test_bnr_invariant_randomized(void)
     create_random_a429_bnr_word(&test_mock_word);
 
     a429_error_t err_code = A429_ERR_NO;
-    a429_encode_bnr(&test_mock_word.word, test_mock_word.value,
-                    test_mock_word.bit_count, test_mock_word.scale, &err_code);
+    a429_encode_bnr(&test_mock_word.word, test_mock_word.value, test_mock_word.payload_begin,
+                    test_mock_word.payload_width, test_mock_word.scale, &err_code);
     if (err_code)
     {
       char message[512];
-      set_invariant_randomized_error_msg(message, err_code, test_seed, i);
+      snprintf(message, sizeof(message),
+               ":>> status = %d seed = %d iter = %d value = %f", err_code, test_seed, i, test_mock_word.value);
 
       TEST_FAIL_MESSAGE(message);
     }
 
     double test_value =
-        a429_decode_bnr(test_mock_word.word, test_mock_word.bit_count,
+        a429_decode_bnr(test_mock_word.word, test_mock_word.payload_begin, test_mock_word.payload_width,
                         test_mock_word.scale, &err_code);
     if (err_code)
     {
       char message[512];
-      set_invariant_randomized_error_msg(message, err_code, test_seed, i);
+      snprintf(message, sizeof(message),
+               ":>> status = %d seed = %d iter = %d value = %f", err_code, test_seed, i, test_mock_word.value);
 
       TEST_FAIL_MESSAGE(message);
     }
-    const double allowed_delta =
-        test_mock_word.resolution / 2.0;
+    const double allowed_delta = test_mock_word.resolution / 2.0;
 
     TEST_ASSERT_DOUBLE_WITHIN(allowed_delta, test_mock_word.value, test_value);
   }

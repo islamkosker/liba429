@@ -10,8 +10,7 @@ static inline void set_invariant_randomized_error_msg(char *m, int e, int s, int
     snprintf(
         m,
         sizeof(m),
-        "FAIL: status = %d seed = %d iter = %d",
-        e, s, i);
+        "FAIL: status = %d seed = %d iter = %d", e, s, i);
 }
 
 #endif // A429_TEST_UTILS

@@ -2,82 +2,124 @@
 #include "a429_word.h"
 
 #include <math.h>
+#define NIBBLE 4U
 
-#define LAST_NIBBLE_IDX 4
-#define MAX_DIGIT (LAST_NIBBLE_IDX + 1)
-#define _3BIT 0x07
-#define _4_BIT 0x0F
-#define MAX_BCD 79999U
-
-static uint8_t get_mask(uint8_t idx)
-{
-
-    return (idx == LAST_NIBBLE_IDX) ? _3BIT : _4_BIT;
-}
-
-double a429_decode_bcd(a429_word_t word, uint8_t digit_count,
+double a429_decode_bcd(a429_word_t word, uint8_t payload_begin, uint8_t payload_width,
                        double resolution, a429_error_t *error_code)
 {
-    if (digit_count == 0 || digit_count > MAX_DIGIT)
+    if (payload_width == 0 || payload_width > A429_MAX_PAYLOAD_WIDTH)
     {
         if (error_code)
-            *error_code = -A429_ERR_DECODE;
+            *error_code = A429_ERR_DECODE;
         return 0.0;
     }
     *error_code = A429_ERR_NO;
 
-    uint32_t data = a429_get_data(word);
+    uint32_t bnr_data = a429_get_bits(word, payload_begin, payload_width);
+
+    const uint8_t full_digits = payload_width / 4U;
+    const uint8_t remaining_bits = payload_width % 4U;
+
+    uint8_t digit_count = full_digits;
+
+    if (remaining_bits != 0)
+        digit_count++;
+
     double value = 0.0;
     double multiplier = 1.0;
 
     for (uint8_t i = 0; i < digit_count; i++)
     {
-        uint8_t mask = get_mask(i);
-        uint8_t digit = data & mask;
+        uint8_t digit_width = NIBBLE;
+        if ((i == (digit_count - 1U)) && (remaining_bits != 0U))
+        {
+            digit_width = remaining_bits;
+        }
+
+        const uint32_t mask = (UINT32_C(1) << digit_width) - UINT32_C(1);
+        const uint8_t digit = (uint8_t)(bnr_data & mask);
 
         if (digit > 9)
         {
-            if (error_code)
-                *error_code = -A429_ERR_INVALID_BCD;
+            *error_code = A429_ERR_INVALID_BCD;
+
             return 0.0;
         }
 
         value += (double)digit * multiplier;
         multiplier *= 10.0;
-
-        data >>= 4;
+        bnr_data >>= digit_width;
     }
 
     return value * resolution;
 }
 
-void a429_encode_bcd(a429_word_t *word, double value, uint8_t digit_count,
-                     double resolution, a429_error_t *error_code)
+void a429_encode_bcd(a429_word_t *word, double value, uint8_t payload_begin,
+                     uint8_t payload_width, double resolution, a429_error_t *error_code)
 {
-    if (digit_count == 0 || digit_count > MAX_DIGIT)
+    if ((payload_width == 0U) ||
+        (payload_width > A429_MAX_PAYLOAD_WIDTH))
     {
-        *error_code = -A429_ERR_ENCODE;
+        *error_code = A429_ERR_ENCODE;
+        return;
+    }
+
+    if (resolution <= 0.0)
+    {
+        *error_code = A429_ERR_INVALID_ARG;
+        return;
+    }
+
+    const double scaled_value = round(fabs(value) / resolution);
+
+    uint32_t raw_value = (uint32_t)scaled_value;
+
+    const uint8_t full_digits = payload_width / 4U;
+    const uint8_t remaining_bits = payload_width % 4U;
+
+    uint8_t digit_count = full_digits;
+
+    if (remaining_bits != 0U)
+    {
+        digit_count++;
+    }
+
+    uint32_t result = 0U;
+    uint8_t shift = 0U;
+
+    for (uint8_t i = 0U; i < digit_count; i++)
+    {
+        uint8_t digit_width = 4U;
+
+        if ((i == (digit_count - 1U)) &&
+            (remaining_bits != 0U))
+        {
+            digit_width = remaining_bits;
+        }
+
+        const uint32_t digit = raw_value % UINT32_C(10);
+        const uint32_t max_digit = (UINT32_C(1) << digit_width) - UINT32_C(1);
+
+        if ((digit > 9U) || (digit > max_digit))
+        {
+            *error_code = A429_ERR_OUT_OF_RANGE;
+            return;
+        }
+
+        result |= digit << shift;
+
+        raw_value /= UINT32_C(10);
+        shift += digit_width;
+    }
+
+    if (raw_value != 0U)
+    {
+
+        *error_code = A429_ERR_OUT_OF_RANGE;
         return;
     }
 
     *error_code = A429_ERR_NO;
-    uint32_t raw_value = (uint32_t)round(fabs(value) / resolution);
-    uint8_t shift = 0;
-    uint32_t result = 0;
 
-    if (raw_value > MAX_BCD)
-    {
-        *error_code = -A429_ERR_OUT_OF_RANGE;
-        return;
-    }
-
-    while (raw_value > 0)
-    {
-        uint8_t digit = (raw_value % 10);
-
-        result |= digit << shift;
-        raw_value /= 10;
-        shift += 4;
-    }
-    a429_set_data(word, result);
+    a429_set_bits(word, result, payload_begin, payload_width);
 }

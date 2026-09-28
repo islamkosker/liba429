@@ -8,24 +8,24 @@
 /**
  * @brief Decodes a BCD (Binary code Decimal) formatted ARINC 429 word into a double value.
  * @param word         The 32-bit raw ARINC word.
- * @param digit_count  Digit count of used for the BCD data
+ * @param bit_width  Digit count of used for the BCD data
  * @param resolution   Value resulation.
  * @param error_code    The error code
  * @return double       The decoded real-world value (e.g., altitude, speed).
  */
 
-double a429_decode_bcd(a429_word_t word, uint8_t digit_count,
+double a429_decode_bcd(a429_word_t word, uint8_t payload_begin, uint8_t payload_width,
                        double resolution, a429_error_t *error_code);
 
 /**
  * @brief Encodes a double value into an ARINC 429 BCD (Binary code Decimal) word format.
  * @param word          Pointer to the 32-bit ARINC word where data will be set.
  * @param value         The real-world value to encode (e.g., 268.0).
- * @param digit_count     Digit count of used for the BCD data
+ * @param bit_width     Digit count of used for the BCD data
  * @param resolution    Value resulation.
  * @param error_code    Pointer to store the execution status.
  */
-void a429_encode_bcd(a429_word_t *word, double value, uint8_t digit_count,
+void a429_encode_bcd(a429_word_t *word, double value, uint8_t payload_begin, uint8_t payload_width,
                      double resolution, a429_error_t *error_code);
 
 #endif // A429_BCD_H

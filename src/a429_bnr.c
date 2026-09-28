@@ -6,11 +6,11 @@
 #include <stddef.h>
 #include <stdint.h>
 
-double a429_decode_bnr(a429_word_t word, uint8_t bit_count,
+double a429_decode_bnr(a429_word_t word, uint8_t payload_begin, uint8_t payload_width,
                        double scale_factor, a429_error_t *error_code)
 {
 
-  if (!bit_count || bit_count > A429_DATA_BIT_COUNT)
+  if (!payload_width || payload_width > A429_MAX_PAYLOAD_WIDTH)
   {
     *error_code = -A429_ERR_DECODE;
     return 0.0;
@@ -20,19 +20,16 @@ double a429_decode_bnr(a429_word_t word, uint8_t bit_count,
     *error_code = A429_ERR_NO;
   }
 
-  uint32_t raw_data = a429_get_data(word);
-  uint8_t unused_bits = A429_DATA_BIT_COUNT - bit_count;
+  uint32_t bnr_value = a429_get_bits(word, payload_begin, payload_width);
 
-  uint32_t bnr_value = raw_data >> unused_bits;
-
-  uint32_t sign_bit = (bnr_value >> (bit_count - 1)) & 0x01;
+  uint32_t sign_bit = (bnr_value >> (payload_width - 1)) & UINT32_C(1);
 
   int32_t signed_value = 0;
 
-  if (sign_bit)
+  if (sign_bit != 0u)
   {
 
-    uint32_t sign_mask = 0xFFFFFFFF << bit_count;
+    uint32_t sign_mask = UINT32_MAX << payload_width;
     signed_value = (int32_t)(bnr_value | sign_mask);
   }
   else
@@ -40,22 +37,21 @@ double a429_decode_bnr(a429_word_t word, uint8_t bit_count,
     signed_value = (int32_t)bnr_value;
   }
 
-  double resolution = scale_factor / (double)(1 << (bit_count - 1));
+  double resolution = scale_factor / (double)(UINT32_C(1) << (payload_width - 1U));
 
   return (double)signed_value * resolution;
 }
 
-void a429_encode_bnr(a429_word_t *word, double value, uint8_t bit_count,
+void a429_encode_bnr(a429_word_t *word, double value, uint8_t payload_begin, uint8_t payload_width,
                      double scale_factor, a429_error_t *error_code)
 {
-
-  if (bit_count < 1 || bit_count > A429_DATA_BIT_COUNT)
+  if ((payload_width == 0U) || (payload_width > A429_MAX_PAYLOAD_WIDTH))
   {
     *error_code = -A429_ERR_ENCODE;
     return;
   }
 
-  if (value >= scale_factor || value < -scale_factor)
+  if ((value >= scale_factor) || (value < -scale_factor))
   {
     *error_code = -A429_ERR_OUT_OF_RANGE;
     return;
@@ -63,15 +59,13 @@ void a429_encode_bnr(a429_word_t *word, double value, uint8_t bit_count,
 
   *error_code = A429_ERR_NO;
 
-  double resolution = scale_factor / (double)(1 << (bit_count - 1));
+  const double resolution = scale_factor / (double)(UINT32_C(1) << (payload_width - 1U));
 
-  int32_t scaled_int = (int32_t)round(value / resolution);
+  const int32_t scaled_int = (int32_t)round(value / resolution);
 
-  uint32_t mask = (1U << bit_count) - 1;
-  uint32_t bnr_value = (uint32_t)scaled_int & mask;
+  const uint32_t mask = (UINT32_C(1) << payload_width) - UINT32_C(1);
 
-  uint8_t unused_bits = A429_DATA_BIT_COUNT - bit_count;
-  uint32_t raw_data = bnr_value << unused_bits;
+  const uint32_t bnr_value = (uint32_t)scaled_int & mask;
 
-  a429_set_data(word, raw_data);
+  a429_set_bits(word, bnr_value, payload_begin, payload_width);
 }

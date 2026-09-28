@@ -50,17 +50,12 @@ typedef enum
     A429_LABEL_TYPE_SIZE = 3
 } a429_label_type_t;
 
-typedef struct
-{
-    uint8_t bit_offset;
-    uint8_t bit_width;
-} a429_discrete_field_t;
 typedef union encode_info
 {
-    a429_discrete_field_t discrete;
-    uint8_t bit_width;
+    uint8_t begin;
+    uint8_t width;
 
-} a429_encoding_info_t;
+} a429_payload_info_t;
 
 typedef struct
 {
@@ -69,7 +64,7 @@ typedef struct
     const char *name;
     const char *unit;
     a429_label_type_t ltype;
-    a429_encoding_info_t encoding;
+    a429_payload_info_t encoding;
     uint32_t min_tx_us;
     uint32_t max_tx_us;
     a429_value_t scale;
@@ -85,7 +80,7 @@ typedef struct
         .name = (name_),                                        \
         .unit = (unit_),                                        \
         .ltype = A429_LABEL_BNR,                                \
-        .encoding.bit_width = (width_),                         \
+        .encoding.payload_width = (width_),                     \
         .scale = (scale_),                                      \
         .offset = (offset_)                                     \
     }
@@ -97,19 +92,19 @@ typedef struct
         .name = (name_),                                        \
         .unit = (unit_),                                        \
         .ltype = A429_LABEL_BCD,                                \
-        .encoding.bit_width = (width_),                         \
+        .encoding.payload_width = (width_),                     \
         .scale = (scale_),                                      \
         .offset = (offset_)                                     \
     }
 
-#define A429_DISC(label_, name_, bit_offset_, bit_width_) \
-    [label_] = &(const a429_label_dictionary_t)           \
-    {                                                     \
-        .label = (label_),                                \
-        .name = (name_),                                  \
-        .ltype = A429_LABEL_DISC,                         \
-        .encoding.discrete.bit_offset = (bit_offset_),    \
-        .encoding.discrete.bit_width = (bit_width_)       \
+#define A429_DISC(label_, name_, bit_offset_, payload_width_) \
+    [label_] = &(const a429_label_dictionary_t)               \
+    {                                                         \
+        .label = (label_),                                    \
+        .name = (name_),                                      \
+        .ltype = A429_LABEL_DISC,                             \
+        .encoding.discrete.bit_offset = (bit_offset_),        \
+        .encoding.discrete.payload_width = (payload_width_)   \
     }
 
 typedef const a429_label_dictionary_t *a429_dictionary_table_t[A429_LABEL_COUNT];

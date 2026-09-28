@@ -1,181 +1,263 @@
 ### liba429 Development
+
 This document tracks the implementation status of the library.
 
---------------------------------------------------------------------------------
+---
 
 ### Current Focus
-**Status:**  🚧 In Progress Planned
-### High-Level API
-**Status:**  ⏳ Planned
-*  [ ] Automatic decoder
-*  [ ] Automatic encoder
-*  [ ] SDI filtering and matching (a429_match_sdi)
-*  [ ] Human-readable output
-*  [ ] Error reporting
---------------------------------------------------------------------------------
 
-### Core
-#### Types
-**Status:**  ✅ Complete
-**Files**
-*  include/types.h
-**Implemented**
-*  [x] Core library types
-*  [x] ARINC 429 word types
-*  [x] SSM enumerations
-
---------------------------------------------------------------------------------
-
-#### Word API
-**Status:**  ✅ Complete
-**Files**
-*  include/word.h
-**Implemented**
-*  [x] Label getter
-*  [x] SDI getter
-*  [x] Data getter
-*  [x] SSM getter
-*  [x] Parity getter
-
---------------------------------------------------------------------------------
-
-#### Parity
-**Status:**  ✅ Complete
-**Files**
-*  include/parity.h
-**Implemented**
-*  [x] Odd parity verification
-*  [x] a429_check_parity()
-
---------------------------------------------------------------------------------
-
-#### Bit Reversal
-**Status:**  ✅ Complete
-**Planned**
-*  [x] 256-entry lookup table
-*  [x] Hardware ↔ Logical label conversion
-*  [x] Public API
-
---------------------------------------------------------------------------------
-
-#### Pack / Unpack
-**Status:**  ✅ Complete
-**Planned**
-*  [x] Hardware → Logical word conversion
-*  [x] Logical → Hardware word conversion
-
---------------------------------------------------------------------------------
-
-### Decoders
-Status: ✅ Complete
-#### BNR
-*  [x] Two's complement decoding
-*  [x] Configurable bit width
-*  [x] Scale factor support
-#### BCD
-*  [x] Packed BCD decoding
-*  [x] 3-bit MSB support
-*  [x] Variable digit count
-#### Discrete
-*  [x] Bit extraction
-*  [x] Individual discrete decoding
-#### SSM
-*  [x] BNR interpretation
-*  [x] BCD interpretation
-*  [x] Discrete interpretation
-
---------------------------------------------------------------------------------
-
-### Encoders
-**Status:**  ✅ Complete
-#### Word Fields
-*  [x] Label setter
-*  [x] SDI setter
-*  [x] Data setter
-*  [x] SSM setter
-#### BNR
-*  [x] Float → BNR
-#### BCD
-*  [x] Integer → Packed BCD
-#### Discrete
-*  [x] Bit packing
-#### Parity
-*  [x] a429_apply_parity()
-
---------------------------------------------------------------------------------
-
-### Label Dictionary
-**Status:** ✅ Complete
-#### Descriptor
-*  [x] Label
-*  [x] Name
-*  [x] Encoding
-*  [x] Bit width
-*  [x] Resolution
-*  [x] Offset
-*  [x] Unit
-#### API
-*  [x] a429_find_label() (O(1))
-
---------------------------------------------------------------------------------
-
-### High-Level API
-**Status:**  🚧 In Progress Planned
-*  [ ] Automatic decoder
-*  [ ] Automatic encoder
-*  [ ] SDI filtering and matching (a429_match_sdi)
-*  [ ] Human-readable output
-*  [ ] Error reporting
-
---------------------------------------------------------------------------------
+**Status:** 🚧 In Progress Planned
 
 ### Testing
-**Status:**  ⏳ Planned
-#### Core
-*  [ ] Word API
-*  [x] Parity
-*  [ ] Bit reversal
-#### Decoder
-*  [x] BNR
-*  [x] BCD
-*  [ ] Discrete
-*  [ ] SSM
-#### Encoder
-*  [x] BNR
-*  [x] BCD
-*  [ ] Discrete
-*  [ ] Parity generation
-#### Integration
-*  [ ] Encode → Decode
-*  [ ] Decode → Encode
-*  [ ] Hardware compatibility
-*  [ ] Reference ARINC vectors
-#### Edge Cases & Error Handling
-*  [ ] Invalid BCD digits handling (Hex A-F limits)
-*  [ ] BNR out-of-bounds limits (exceeding Scale Factor)
-*  [ ] Null word / Empty bus handling
 
---------------------------------------------------------------------------------
+**Status:** 🚧 In Progress Planned
+
+#### Core
+
+- [ ] Word API
+- [x] Parity
+- [ ] Bit reversal
+
+#### Decoder
+
+- [x] BNR
+- [x] BCD
+- [ ] Discrete
+- [ ] SSM
+
+#### Encoder
+
+- [x] BNR
+- [x] BCD
+- [ ] Discrete
+- [ ] Parity generation
+
+#### Integration
+
+- [ ] Encode → Decode
+- [ ] Decode → Encode
+- [ ] Hardware compatibility
+- [ ] Reference ARINC vectors
+
+#### Edge Cases & Error Handling
+
+- [ ] Invalid BCD digits handling (Hex A-F limits)
+- [ ] BNR out-of-bounds limits (exceeding Scale Factor)
+- [ ] Null word / Empty bus handling
+
+---
+
+### Core
+
+#### Types
+
+**Status:** ✅ Complete
+**Files**
+
+- include/types.h
+  **Implemented**
+- [x] Core library types
+- [x] ARINC 429 word types
+- [x] SSM enumerations
+
+---
+
+#### Word API
+
+**Status:** ✅ Complete
+**Files**
+
+- include/word.h
+  **Implemented**
+- [x] Label getter
+- [x] SDI getter
+- [x] Data getter
+- [x] SSM getter
+- [x] Parity getter
+
+---
+
+#### Parity
+
+**Status:** ✅ Complete
+**Files**
+
+- include/parity.h
+  **Implemented**
+- [x] Odd parity verification
+- [x] a429_check_parity()
+
+---
+
+#### Bit Reversal
+
+**Status:** ✅ Complete
+**Planned**
+
+- [x] 256-entry lookup table
+- [x] Hardware ↔ Logical label conversion
+- [x] Public API
+
+---
+
+#### Pack / Unpack
+
+**Status:** ✅ Complete
+**Planned**
+
+- [x] Hardware → Logical word conversion
+- [x] Logical → Hardware word conversion
+
+---
+
+### Decoders
+
+Status: ✅ Complete
+
+#### BNR
+
+- [x] Two's complement decoding
+- [x] Configurable bit width
+- [x] Scale factor support
+
+#### BCD
+
+- [x] Packed BCD decoding
+- [x] 3-bit MSB support
+- [x] Variable digit count
+
+#### Discrete
+
+- [x] Bit extraction
+- [x] Individual discrete decoding
+
+#### SSM
+
+- [x] BNR interpretation
+- [x] BCD interpretation
+- [x] Discrete interpretation
+
+---
+
+### Encoders
+
+**Status:** ✅ Complete
+
+#### Word Fields
+
+- [x] Label setter
+- [x] SDI setter
+- [x] Data setter
+- [x] SSM setter
+
+#### BNR
+
+- [x] Float → BNR
+
+#### BCD
+
+- [x] Integer → Packed BCD
+
+#### Discrete
+
+- [x] Bit packing
+
+#### Parity
+
+- [x] a429_apply_parity()
+
+---
+
+### Label Dictionary
+
+**Status:** ✅ Complete
+
+#### Descriptor
+
+- [x] Label
+- [x] Name
+- [x] Encoding
+- [x] Bit width
+- [x] Resolution
+- [x] Offset
+- [x] Unit
+
+#### API
+
+- [x] a429_find_label() (O(1))
+
+---
+
+### High-Level API
+
+**Status:** ✅ Complete
+
+- [x] Automatic decoder
+- [x] Automatic encode
+
+---
+
+### Testing
+
+**Status:** 🚧 In Progress Planned
+
+#### Core
+
+- [ ] Word API
+- [x] Parity
+- [ ] Bit reversal
+
+#### Decoder
+
+- [x] BNR
+- [x] BCD
+- [ ] Discrete
+- [ ] SSM
+
+#### Encoder
+
+- [x] BNR
+- [x] BCD
+- [ ] Discrete
+- [ ] Parity generation
+
+#### Integration
+
+- [ ] Encode → Decode
+- [ ] Decode → Encode
+- [ ] Hardware compatibility
+- [ ] Reference ARINC vectors
+
+#### Edge Cases & Error Handling
+
+- [ ] Invalid BCD digits handling (Hex A-F limits)
+- [ ] BNR out-of-bounds limits (exceeding Scale Factor)
+- [ ] Null word / Empty bus handling
+
+---
 
 ### Williamsburg Protocol (Optional)
-**Status:**  ⏳ Planned
-*  [ ] RTS
-*  [ ] CTS
-*  [ ] ACK
-*  [ ] SOT
-*  [ ] EOT
-*  [ ] State machine
-*  [ ] Block transfer
 
---------------------------------------------------------------------------------
+**Status:** ⏳ Planned
+
+- [ ] RTS
+- [ ] CTS
+- [ ] ACK
+- [ ] SOT
+- [ ] EOT
+- [ ] State machine
+- [ ] Block transfer
+
+---
 
 ### Future Ideas
-*  [ ] Pretty printer
-*  [ ] CSV label importer
-*  [ ] JSON label importer
-*  [ ] YAML label importer
-*  [ ] Signal monitor
-*  [ ] Logging utilities
-*  [ ] PCAP export
-*  [ ] Benchmark suite
-*  [ ] Documentation website
+
+- [ ] Pretty printer
+- [ ] CSV label importer
+- [ ] JSON label importer
+- [ ] YAML label importer
+- [ ] Signal monitor
+- [ ] Logging utilities
+- [ ] PCAP export
+- [ ] Benchmark suite
+- [ ] Documentation website

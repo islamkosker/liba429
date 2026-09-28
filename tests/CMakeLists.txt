@@ -31,7 +31,7 @@ function(add_liba429_test name src)
     )
 
     target_include_directories(${name} PRIVATE
-        "${PROJECT_SOURCE_DIR}/include"
+        "${PROJECT_SOURCE_DIR}/src/a429"
         "${UNITY_DIR}"
         "${UTILS_DIR}"
 

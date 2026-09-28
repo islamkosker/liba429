@@ -16,14 +16,18 @@
 #define A429_WORD_MASK 0x7FFFFFFFU
 #define A429_PAYLOAD_MASK 0xFFFFFF00U
 
-#define A429_DATA_BIT_COUNT 19
+#define A429_DATA_BEGIN 11U
+#define A429_SDI_BEGIN 9U
+#define A429_DATA_SSM_WIDTH 21U
+
+#define A429_MAX_PAYLOAD_WIDTH 23U
 
 extern const uint8_t a429_bit_reverse_table[];
 
 /**
  * @brief  Extracts the Label field (ARINC 429 bits 1-8 / C bits 0-7).
  * @param  word: The 32-bit raw ARINC word.
- * @return 8-bit unsigned label value.
+ * @return 8-bit unsigned label payload.
  * @note   Label is the first 8 bits. Octal representation is standard for this
  * field.
  */
@@ -35,7 +39,7 @@ static inline uint8_t a429_get_label(a429_word_t word)
  * @brief  Extracts the SDI (Source/Destination Identifier) field (ARINC 429
  * bits 9-10 / C bits 8-9).
  * @param  word: The 32-bit raw ARINC word.
- * @return 2-bit value (0-3).
+ * @return 2-bit payload (0-3).
  * @note   Used to identify the source or destination of the data.
  */
 static inline uint8_t a429_get_sdi(a429_word_t word)
@@ -46,7 +50,7 @@ static inline uint8_t a429_get_sdi(a429_word_t word)
 /**
  * @brief  Extracts the DATA field (ARINC 429 bits 11-29 / C bits 10-28).
  * @param  word: The 32-bit raw ARINC word.
- * @return 19-bit data value.
+ * @return 19-bit data payload.
  * @note   This field's interpretation depends on the coding type (BNR, BCD, or
  * Discrete).
  */
@@ -54,11 +58,19 @@ static inline a429_word_t a429_get_data(a429_word_t word)
 {
   return (word >> A429_DATA_SHIFT) & A429_DATA_MASK;
 }
+
+static inline a429_word_t a429_get_bits(a429_word_t word, uint8_t begin, uint8_t width)
+{
+  uint8_t shift = begin - 1U;
+  uint32_t mask = (UINT32_C(1) << width) - UINT32_C(1);
+  return (word >> shift) & mask;
+}
+
 /**
  * @brief  Extracts the SSM (Sign/Status Matrix) field (ARINC 429 bits 30-31 / C
  * bits 29-30).
  * @param  word: The 32-bit raw ARINC word.
- * @return 2-bit value.
+ * @return 2-bit payload.
  * @note   Indicates hardware condition, operational mode, or validity of data.
  */
 static inline uint8_t a429_get_ssm(a429_word_t word)
@@ -69,7 +81,7 @@ static inline uint8_t a429_get_ssm(a429_word_t word)
 /**
  * @brief  Extracts the PARITY field (ARINC 429 bit 32 / C bit 31).
  * @param  word: The 32-bit raw ARINC word.
- * @return 1-bit value.
+ * @return 1-bit payload.
  * @note   ARINC 429 typically uses Odd Parity for error detection.
  */
 static inline uint8_t a429_get_parity(a429_word_t word)
@@ -80,7 +92,7 @@ static inline uint8_t a429_get_parity(a429_word_t word)
 /**
  * @brief  Extracts all bits except the parity bit (ARINC 429 bits 1-31).
  * @param  word: The 32-bit raw ARINC word.
- * @return 31-bit value used for parity calculation or data integrity checks.
+ * @return 31-bit payload used for parity calculation or data integrity checks.
  * @note   Masks out the 32nd bit (MSB / Parity bit).
  */
 static inline a429_word_t a429_get_without_parity(a429_word_t word)
@@ -105,7 +117,7 @@ static inline a429_word_t a429_get_without_parity(a429_word_t word)
 /**
  * @brief  Sets the Label field (ARINC 429 bits 1-8 / C bits 0-7).
  * @param  word: Pointer to the 32-bit raw ARINC word.
- * @param  label: 8-bit unsigned label value to set.
+ * @param  label: 8-bit unsigned label payload to set.
  */
 static inline void a429_set_label(a429_word_t *word, uint8_t label)
 {
@@ -115,7 +127,7 @@ static inline void a429_set_label(a429_word_t *word, uint8_t label)
 /**
  * @brief  Sets the SDI field (ARINC 429 bits 9-10).
  * @param  word: Pointer to the 32-bit raw ARINC word.
- * @param  sdi: 2-bit SDI value (0-3).
+ * @param  sdi: 2-bit SDI payload (0-3).
  */
 static inline void a429_set_sdi(a429_word_t *word, uint8_t sdi)
 {
@@ -134,10 +146,19 @@ static inline void a429_set_data(a429_word_t *word, a429_word_t data)
           ((data & A429_DATA_MASK) << A429_DATA_SHIFT);
 }
 
+static inline void a429_set_bits(a429_word_t *word, a429_word_t payload, uint8_t begin, uint8_t width)
+{
+  uint8_t shift = begin - 1U;
+  a429_word_t mask = (UINT32_C(1) << width) - UINT32_C(1);
+
+  *word &= ~(mask << shift);
+  *word |= (payload & mask) << shift;
+}
+
 /**
  * @brief  Sets the SSM field (ARINC 429 bits 30-31).
  * @param  word: Pointer to the 32-bit raw ARINC word.
- * @param  ssm: 2-bit SSM value.
+ * @param  ssm: 2-bit SSM payload.
  */
 static inline void a429_set_ssm(a429_word_t *word, uint8_t ssm)
 {

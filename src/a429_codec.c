@@ -35,7 +35,7 @@ static a429_error_t a429_bnr_decode_wrapper(a429_word_t word, a429_decode_result
 
     a429_error_t err = A429_ERR_NO;
 
-    a429_value_t value = a429_decode_bnr(word, dict->encoding.bit_width, dict->scale, &err);
+    a429_value_t value = a429_decode_bnr(word, dict->encoding.begin, dict->encoding.width, dict->scale, &err);
     if (err != A429_ERR_NO)
         return err;
 
@@ -52,7 +52,7 @@ static a429_error_t a429_bnr_encode_wrapper(a429_word_t *word, const a429_encode
 
     a429_word_t temp_word = 0;
     a429_error_t e = A429_ERR_NO;
-    a429_encode_bnr(&temp_word, params->payload.value, dict->encoding.bit_width, dict->scale, &e);
+    a429_encode_bnr(&temp_word, params->payload.value, dict->encoding.begin, dict->encoding.width, dict->scale, &e);
     if (e != A429_ERR_NO)
         return e;
 
@@ -71,7 +71,7 @@ static a429_error_t a429_bcd_decode_wrapper(a429_word_t word, a429_decode_result
 
     a429_error_t err = A429_ERR_NO;
 
-    a429_value_t value = a429_decode_bcd(word, dict->encoding.bit_width, dict->scale, &err);
+    a429_value_t value = a429_decode_bcd(word, dict->encoding.begin, dict->encoding.width, dict->scale, &err);
     if (err != A429_ERR_NO)
         return err;
     disassemble_word(word, result, dict, value);
@@ -87,7 +87,7 @@ static a429_error_t a429_bcd_encode_wrapper(a429_word_t *word, const a429_encode
 
     a429_word_t temp_word = 0;
     a429_error_t e = A429_ERR_NO;
-    a429_encode_bcd(&temp_word, params->payload.value, dict->encoding.bit_width, dict->scale, &e);
+    a429_encode_bcd(&temp_word, params->payload.value, dict->encoding.begin, dict->encoding.width, dict->scale, &e);
     if (e != A429_ERR_NO)
         return e;
 
@@ -106,7 +106,7 @@ static a429_error_t a429_disc_decode_wrapper(a429_word_t word, a429_decode_resul
 
     a429_error_t err = A429_ERR_NO;
 
-    uint32_t state = a429_get_discrete_field(word, dict->encoding.discrete.bit_offset, dict->encoding.discrete.bit_width);
+    uint32_t state = a429_get_discrete_field(word, dict->encoding.begin, dict->encoding.width);
 
     // disassemble word
     result->payload.discrete = state;
@@ -121,7 +121,7 @@ static a429_error_t a429_disc_encode_wrapper(a429_word_t *word, const a429_encod
     if (!word || !params || !dict)
         return A429_ERR_INVALID_ARG;
     a429_word_t temp_word = 0;
-    a429_set_discrete_field(&temp_word, dict->encoding.discrete.bit_offset, dict->encoding.discrete.bit_width, params->payload.discrete);
+    a429_set_discrete_field(&temp_word, params->payload.discrete, dict->encoding.begin, dict->encoding.width);
     *word = assemble_word(temp_word, params, dict);
     return A429_ERR_NO;
 }

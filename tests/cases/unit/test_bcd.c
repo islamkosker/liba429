@@ -19,24 +19,25 @@ void test_bcd_invariant_randomized(void)
 
         a429_error_t err_code = A429_ERR_NO;
 
-        a429_encode_bcd(
-            &test_mock_word.word, test_mock_word.value,
-            test_mock_word.digit_count, test_mock_word.resolution, &err_code);
+        a429_encode_bcd(&test_mock_word.word, test_mock_word.value, test_mock_word.payload_begin,
+                        test_mock_word.payload_width, test_mock_word.resolution, &err_code);
 
         if (err_code)
         {
             char message[256];
-            set_invariant_randomized_error_msg(message, err_code, test_seed, i);
+            snprintf(message, sizeof(message),
+                     ":>> status = %d seed = %d iter = %d value = %f", err_code, test_seed, i, test_mock_word.value);
             TEST_FAIL_MESSAGE(message);
         }
 
-        const double decoded_value = a429_decode_bcd(test_mock_word.word, test_mock_word.digit_count,
-                                                     test_mock_word.resolution, &err_code);
+        const double decoded_value = a429_decode_bcd(test_mock_word.word, test_mock_word.payload_begin,
+                                                     test_mock_word.payload_width, test_mock_word.resolution, &err_code);
 
         if (err_code)
         {
             char message[256];
-            set_invariant_randomized_error_msg(message, err_code, test_seed, i);
+            snprintf(message, sizeof(message),
+                     ":>> status = %d seed = %d iter = %d value = %f", err_code, test_seed, i, test_mock_word.value);
             TEST_FAIL_MESSAGE(message);
         }
 
