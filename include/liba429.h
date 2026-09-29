@@ -19,10 +19,8 @@ typedef enum
     A429_ERR_INVALID_BIT = 123,
     A429_ERR_INVALID_ARG = 122,
     A429_ERR_INVALID_LABEL = 121,
-    A429_ERR_INVALID_PARITY = 120,
-    A429_ERR_DUPLICATE_LABEL = 119,
-    A429_ERR_BAD_PARITY = 118,
-    A429_ERR_UNKNOWN_LABEL = 117,
+    A429_ERR_BAD_PARITY = 120,
+    A429_ERR_UNKNOWN_LABEL = 119,
 
 } a429_error_t;
 
@@ -68,6 +66,7 @@ typedef struct
     uint32_t min_tx_us;
     uint32_t max_tx_us;
     a429_value_t scale;
+    a429_value_t resolution;
     a429_value_t offset;
 } a429_label_dictionary_t;
 

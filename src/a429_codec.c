@@ -2,7 +2,7 @@
 #include "a429_word.h"
 #include "a429_bnr.h"
 #include "a429_bcd.h"
-#include "a429_discrete.h"
+#include "a429_disc.h"
 #include "a429_parity.h"
 
 #include "a429_codec.h"
@@ -71,7 +71,7 @@ static a429_error_t a429_bcd_decode_wrapper(a429_word_t word, a429_decode_result
 
     a429_error_t err = A429_ERR_NO;
 
-    a429_value_t value = a429_decode_bcd(word, dict->encoding.begin, dict->encoding.width, dict->scale, &err);
+    a429_value_t value = a429_decode_bcd(word, dict->encoding.begin, dict->encoding.width, dict->resolution, &err);
     if (err != A429_ERR_NO)
         return err;
     disassemble_word(word, result, dict, value);
@@ -87,7 +87,7 @@ static a429_error_t a429_bcd_encode_wrapper(a429_word_t *word, const a429_encode
 
     a429_word_t temp_word = 0;
     a429_error_t e = A429_ERR_NO;
-    a429_encode_bcd(&temp_word, params->payload.value, dict->encoding.begin, dict->encoding.width, dict->scale, &e);
+    a429_encode_bcd(&temp_word, params->payload.value, dict->encoding.begin, dict->encoding.width, dict->resolution, &e);
     if (e != A429_ERR_NO)
         return e;
 

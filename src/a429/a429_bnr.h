@@ -15,7 +15,7 @@
  * @return double       The decoded real-world value (e.g., altitude, speed).
  */
 double a429_decode_bnr(a429_word_t word, uint8_t payload_begin, uint8_t payload_width,
-                       double resolution, a429_error_t *error_code);
+                       double scale_factor, a429_error_t *error_code);
 
 /**
  * @brief Encodes a double value into an ARINC 429 BNR word format.

@@ -9,10 +9,15 @@ double a429_decode_bcd(a429_word_t word, uint8_t payload_begin, uint8_t payload_
 {
     if (payload_width == 0 || payload_width > A429_MAX_PAYLOAD_WIDTH)
     {
-        if (error_code)
-            *error_code = A429_ERR_DECODE;
+        *error_code = A429_ERR_DECODE;
         return 0.0;
     }
+    if (resolution <= 0.0)
+    {
+        *error_code = A429_ERR_INVALID_ARG;
+        return 0.0;
+    }
+
     *error_code = A429_ERR_NO;
 
     uint32_t bnr_data = a429_get_bits(word, payload_begin, payload_width);
@@ -70,9 +75,9 @@ void a429_encode_bcd(a429_word_t *word, double value, uint8_t payload_begin,
         return;
     }
 
-    const double scaled_value = round(fabs(value) / resolution);
+    const double resolutiond_value = round(fabs(value) / resolution);
 
-    uint32_t raw_value = (uint32_t)scaled_value;
+    uint32_t raw_value = (uint32_t)resolutiond_value;
 
     const uint8_t full_digits = payload_width / 4U;
     const uint8_t remaining_bits = payload_width % 4U;
@@ -114,7 +119,6 @@ void a429_encode_bcd(a429_word_t *word, double value, uint8_t payload_begin,
 
     if (raw_value != 0U)
     {
-
         *error_code = A429_ERR_OUT_OF_RANGE;
         return;
     }

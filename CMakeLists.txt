@@ -9,7 +9,7 @@ add_library(a429 STATIC
     src/a429_bnr.c
     src/a429_bcd.c
     src/a429_codec.c
-    src/a429_discrete.c
+    src/a429_disc.c
     src/a429_parity.c
     src/a429_word.c
     src/a429_protocol.c

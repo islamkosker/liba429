@@ -1,4 +1,4 @@
-#include "a429_discrete.h"
+#include "a429_disc.h"
 #include "a429_word.h"
 
 #include <stdint.h>

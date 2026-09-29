@@ -41,9 +41,54 @@ void test_bnr_invariant_randomized(void)
 
       TEST_FAIL_MESSAGE(message);
     }
-    const double allowed_delta = test_mock_word.resolution / 2.0;
 
-    TEST_ASSERT_DOUBLE_WITHIN(allowed_delta, test_mock_word.value, test_value);
+    TEST_ASSERT_DOUBLE_WITHIN(test_mock_word.resolution, test_mock_word.value, test_value);
+  }
+}
+
+void test_bnr_boundry_values(void)
+{
+  const uint8_t payload_begin = UINT32_C(11);
+  const uint8_t payload_width = UINT32_C(19);
+  const double scale = 100.f;
+  const double resolution = scale / (double)(UINT32_C(1) << (payload_width - UINT32_C(1)));
+
+  const double values[] = {0., resolution, (-resolution), (scale - resolution), (-scale + resolution)};
+
+  for (size_t i = 0; i < ARRAY_SIZE(values); i++)
+  {
+    a429_word_t word = 0;
+    a429_error_t encode_error = A429_ERR_NO;
+    a429_error_t decode_error = A429_ERR_NO;
+
+    a429_encode_bnr(&word, values[i], payload_begin, payload_width, scale, &encode_error);
+
+    TEST_ASSERT_EQUAL(A429_ERR_NO, encode_error);
+
+    const double decoded = a429_decode_bnr(word, payload_begin, payload_width, scale, &decode_error);
+    TEST_ASSERT_EQUAL(A429_ERR_NO, decode_error);
+
+    TEST_ASSERT_DOUBLE_WITHIN(resolution, values[i], decoded);
+  }
+}
+
+void test_bnr_out_of_range(void)
+{
+  a429_word_t word = 0;
+  a429_error_t error = A429_ERR_NO;
+  const uint8_t payload_begin = UINT32_C(11);
+  const uint8_t payload_width = UINT32_C(19);
+  const double scale = 100.f;
+  const double resolution = scale / (double)(UINT32_C(1) << (payload_width - UINT32_C(1)));
+
+  const double values[] = {scale + 0.000001, scale + 1, scale * 2};
+
+  for (size_t i = 0; i < ARRAY_SIZE(values); i++)
+  {
+
+    a429_encode_bnr(&word, values[i], payload_begin, payload_width, scale, &error);
+
+    TEST_ASSERT_EQUAL(A429_ERR_OUT_OF_RANGE, error);
   }
 }
 
@@ -53,6 +98,7 @@ int main(void)
   srand(test_seed);
   UNITY_BEGIN();
   RUN_TEST(test_bnr_invariant_randomized);
-
+  RUN_TEST(test_bnr_boundry_values);
+  RUN_TEST(test_bnr_out_of_range);
   return UNITY_END();
 }

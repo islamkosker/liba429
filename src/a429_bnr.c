@@ -12,7 +12,7 @@ double a429_decode_bnr(a429_word_t word, uint8_t payload_begin, uint8_t payload_
 
   if (!payload_width || payload_width > A429_MAX_PAYLOAD_WIDTH)
   {
-    *error_code = -A429_ERR_DECODE;
+    *error_code = A429_ERR_DECODE;
     return 0.0;
   }
   else
@@ -47,13 +47,13 @@ void a429_encode_bnr(a429_word_t *word, double value, uint8_t payload_begin, uin
 {
   if ((payload_width == 0U) || (payload_width > A429_MAX_PAYLOAD_WIDTH))
   {
-    *error_code = -A429_ERR_ENCODE;
+    *error_code = A429_ERR_ENCODE;
     return;
   }
 
   if ((value >= scale_factor) || (value < -scale_factor))
   {
-    *error_code = -A429_ERR_OUT_OF_RANGE;
+    *error_code = A429_ERR_OUT_OF_RANGE;
     return;
   }
 

@@ -4,13 +4,6 @@
 #include <stdio.h>
 
 #define RANDOM_TEST_ITERATIONS 10000
-
-static inline void set_invariant_randomized_error_msg(char *m, int e, int s, int i)
-{
-    snprintf(
-        m,
-        sizeof(m),
-        "FAIL: status = %d seed = %d iter = %d", e, s, i);
-}
+#define ARRAY_SIZE(ar) sizeof((ar)) / sizeof((ar[0]))
 
 #endif // A429_TEST_UTILS
