@@ -7,23 +7,6 @@
 
 #include "a429_codec.h"
 
-static inline void disassemble_word(const a429_word_t word, a429_decode_result_t *result,
-                                    const a429_label_dictionary_t *dict, a429_value_t value)
-{
-    result->payload.value = value + dict->offset;
-    result->sdi = a429_get_sdi(word);
-    result->ssm = a429_get_ssm(word);
-}
-
-static inline a429_word_t assemble_word(a429_word_t temp_word, const a429_encode_params_t *params,
-                                        const a429_label_dictionary_t *dict)
-{
-    a429_set_label(&temp_word, dict->label);
-    a429_set_sdi(&temp_word, params->sdi);
-    a429_set_ssm(&temp_word, params->ssm);
-    return a429_apply_parity(temp_word);
-}
-
 static a429_error_t a429_bnr_decode_wrapper(a429_word_t word, a429_decode_result_t *result,
                                             const a429_label_dictionary_t *dict)
 {
@@ -39,7 +22,9 @@ static a429_error_t a429_bnr_decode_wrapper(a429_word_t word, a429_decode_result
     if (err != A429_ERR_NO)
         return err;
 
-    disassemble_word(word, result, dict, value);
+    result->payload.value = value + dict->offset;
+    result->sdi = a429_get_sdi(word);
+    result->ssm.ssm_bnr = a429_get_ssm(word);
 
     return A429_ERR_NO;
 }
@@ -56,7 +41,10 @@ static a429_error_t a429_bnr_encode_wrapper(a429_word_t *word, const a429_encode
     if (e != A429_ERR_NO)
         return e;
 
-    *word = assemble_word(temp_word, params, dict);
+    a429_set_label(&temp_word, dict->label);
+    a429_set_sdi(&temp_word, params->sdi);
+    a429_set_ssm(&temp_word, params->ssm.ssm_bnr);
+    *word = a429_apply_parity(temp_word);
     return A429_ERR_NO;
 }
 
@@ -74,7 +62,9 @@ static a429_error_t a429_bcd_decode_wrapper(a429_word_t word, a429_decode_result
     a429_value_t value = a429_decode_bcd(word, dict->encoding.begin, dict->encoding.width, dict->resolution, &err);
     if (err != A429_ERR_NO)
         return err;
-    disassemble_word(word, result, dict, value);
+    result->payload.value = value + dict->offset;
+    result->sdi = a429_get_sdi(word);
+    result->ssm.ssm_bcd = a429_get_ssm(word);
 
     return A429_ERR_NO;
 }
@@ -91,7 +81,11 @@ static a429_error_t a429_bcd_encode_wrapper(a429_word_t *word, const a429_encode
     if (e != A429_ERR_NO)
         return e;
 
-    *word = assemble_word(temp_word, params, dict);
+    a429_set_label(&temp_word, dict->label);
+    a429_set_sdi(&temp_word, params->sdi);
+    a429_set_ssm(&temp_word, params->ssm.ssm_bcd);
+    *word = a429_apply_parity(temp_word);
+
     return A429_ERR_NO;
 }
 
@@ -108,10 +102,9 @@ static a429_error_t a429_disc_decode_wrapper(a429_word_t word, a429_decode_resul
 
     uint32_t state = a429_get_discrete_field(word, dict->encoding.begin, dict->encoding.width);
 
-    // disassemble word
     result->payload.discrete = state;
     result->sdi = a429_get_sdi(word);
-    result->ssm = a429_get_ssm(word);
+    result->ssm.ssm_disc = a429_get_ssm(word);
     return err;
 }
 
@@ -122,7 +115,10 @@ static a429_error_t a429_disc_encode_wrapper(a429_word_t *word, const a429_encod
         return A429_ERR_INVALID_ARG;
     a429_word_t temp_word = 0;
     a429_set_discrete_field(&temp_word, params->payload.discrete, dict->encoding.begin, dict->encoding.width);
-    *word = assemble_word(temp_word, params, dict);
+    a429_set_label(&temp_word, dict->label);
+    a429_set_sdi(&temp_word, params->sdi);
+    a429_set_ssm(&temp_word, params->ssm.ssm_disc);
+    *word = a429_apply_parity(temp_word);
     return A429_ERR_NO;
 }
 

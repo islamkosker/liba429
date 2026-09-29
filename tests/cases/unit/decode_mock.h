@@ -30,7 +30,7 @@ typedef struct
   double resolution;
 } test_word_bcd_t;
 
-unsigned long long large_rand()
+const unsigned long long large_rand()
 {
   unsigned long long r = 0;
   for (int i = 0; i < 5; i++)
