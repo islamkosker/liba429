@@ -19,7 +19,6 @@
 #define A429_DATA_BEGIN 11U
 #define A429_SDI_BEGIN 9U
 #define A429_DATA_SSM_WIDTH 21U
-
 #define A429_MAX_PAYLOAD_WIDTH 23U
 
 extern const uint8_t a429_bit_reverse_table[];
