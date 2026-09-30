@@ -29,15 +29,19 @@ typedef enum
     A429_SSM_BNR_FAILURE = 0x00,         // 00: Failure Warning
     A429_SSM_BNR_NO_COMPUTE_DATA = 0x01, // 01: No Computed Data
     A429_SSM_BNR_FUNCTIONAL_TEST = 0x02, // 10: Functional Test
-    A429_SSM_BNR_NORMAL = 0x03           // 11: Normal Operation
+    A429_SSM_BNR_NORMAL = 0x03,          // 11: Normal Operation
+    A429_SSM_BNR_NOT_USE = 0x04,
+
 } a429_ssm_bnr_t;
 
 typedef enum
 {
-    A429_SSM_BCD_PLUS_NORTH_EAST = 0x00, // 00: Plus, North, East, Right, To, Above
-    A429_SSM_BCD_NO_COMPUTE_DATA = 0x01, // 01: No Computed Data
-    A429_SSM_BCD_FUNCTIONAL_TEST = 0x02, // 10: Functional Test
-    A429_SSM_BCD_MINUS_SOUTH_WEST = 0x03 // 11: Minus, South, West, Left, From, Below
+    A429_SSM_BCD_PLUS_NORTH_EAST = 0x00,  // 00: Plus, North, East, Right, To, Above
+    A429_SSM_BCD_NO_COMPUTE_DATA = 0x01,  // 01: No Computed Data
+    A429_SSM_BCD_FUNCTIONAL_TEST = 0x02,  // 10: Functional Test
+    A429_SSM_BCD_MINUS_SOUTH_WEST = 0x03, // 11: Minus, South, West, Left, From, Below
+    A429_SSM_BCD_NOT_USE = 0x04,
+
 } a429_ssm_bcd_t;
 
 typedef enum
@@ -45,7 +49,9 @@ typedef enum
     A429_SSM_DISC_NORMAL = 0x00,          // 00: Verified Data, Normal Operation
     A429_SSM_DISC_NO_COMPUTE_DATA = 0x01, // 01: No Computed Data
     A429_SSM_DISC_FUNCTIONAL_TEST = 0x02, // 10: Functional Test
-    A429_SSM_DISC_FAILURE = 0x03          // 11: Failure Warning
+    A429_SSM_DISC_FAILURE = 0x03,         // 11: Failure Warning
+    A429_SSM_DISC_NOT_USE = 0x04,
+
 } a429_ssm_disc_t;
 
 typedef enum
@@ -54,6 +60,7 @@ typedef enum
     A429_SDI_SYS1 = 0x01,
     A429_SDI_SYS2 = 0x02,
     A429_SDI_SYS3 = 0x03,
+    A429_SDI_NOT_USE = 0x04,
 
 } a429_sdi_t;
 
@@ -73,7 +80,7 @@ typedef union a429_payload
 typedef struct a429_word_fields
 {
     a429_payload_u payload;
-    uint8_t sdi;
+    a429_sdi_t sdi;
     a429_ssm_t ssm;
 } a429_word_fields_t;
 
@@ -150,7 +157,7 @@ typedef struct
         .equipment_id = (eqid_),                                                                        \
         .name = (name_),                                                                                \
         .unit = (unit_),                                                                                \
-        .ltype = A429_LABEL_BNR,                                                                        \
+        .ltype = A429_LABEL_DISC,                                                                       \
         .encoding.begin = (begin_),                                                                     \
         .encoding.width = (width_),                                                                     \
         .bit_time = (bit_time_),                                                                        \

@@ -1,5 +1,5 @@
 #include "a429_disc.h"
-#include "decode_mock.h"
+#include "test_unit_mock.h"
 #define UNITY_INCLUDE_CONFIG_H
 
 #include "unity.h"
@@ -20,7 +20,8 @@ static uint32_t random_discrete_word(size_t width, bool all_zero, bool all_one)
             disc_word = disc_word | (0 << i);
         if (all_one)
             disc_word = disc_word | (1 << i);
-        disc_word = disc_word | ((rand() % 2) == 0 ? 1 : 0 << i);
+
+        disc_word |= ((uint32_t)(rand() % 2) << i);
     }
 
     return disc_word;

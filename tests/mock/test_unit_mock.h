@@ -50,17 +50,17 @@ static inline void create_random_a429_bnr_word(test_word_bnr_t *word)
 
   word->payload_begin = possible_begin[r % 2];
 
-  const uint32_t capacity = UINT32_C(1) << (word->payload_width - 1U);
+  uint32_t capacity = UINT32_C(1) << (word->payload_width - 1U);
 
-  const uint32_t max_positive = capacity - UINT32_C(1);
+  uint32_t max_positive = capacity - UINT32_C(1);
 
   word->scale = 10.0 + ((double)rand() / (double)RAND_MAX) * 99990.0;
 
   word->resolution = word->scale / (double)capacity;
 
-  const double max_positive_value = (double)max_positive * word->resolution;
+  double max_positive_value = (double)max_positive * word->resolution;
 
-  const double random_multiplier = ((double)rand() / (double)RAND_MAX) * 2.0 - 1.0;
+  double random_multiplier = ((double)rand() / (double)RAND_MAX) * 2.0 - 1.0;
 
   word->value = random_multiplier * max_positive_value;
 }

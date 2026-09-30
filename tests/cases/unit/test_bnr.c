@@ -1,6 +1,6 @@
 
 #include "a429_bnr.h"
-#include "decode_mock.h"
+#include "test_unit_mock.h"
 #define UNITY_INCLUDE_CONFIG_H
 
 #include "unity.h"

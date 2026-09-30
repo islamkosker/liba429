@@ -6,7 +6,7 @@
 #include "a429_parity.h"
 
 #include "a429_codec.h"
-
+#define A429_SSM_START_BIT 30
 static a429_error_t a429_bnr_decode_wrapper(a429_word_t word, a429_decode_result_t *result,
                                             const a429_label_dictionary_t *dict)
 {
@@ -23,8 +23,16 @@ static a429_error_t a429_bnr_decode_wrapper(a429_word_t word, a429_decode_result
         return err;
 
     result->payload.value = value + dict->offset;
-    result->sdi = a429_get_sdi(word);
-    result->ssm.ssm_bnr = a429_get_ssm(word);
+
+    if ((dict->encoding.begin + dict->encoding.width - 1U) < A429_SSM_START_BIT)
+        result->ssm.ssm_bnr = a429_get_ssm(word);
+    else
+        result->ssm.ssm_bnr = A429_SSM_BNR_NOT_USE;
+
+    if (dict->encoding.begin != A429_SDI_BEGIN)
+        result->sdi = a429_get_sdi(word);
+    else
+        result->sdi = A429_SDI_NOT_USE;
 
     return A429_ERR_NO;
 }
@@ -41,9 +49,15 @@ static a429_error_t a429_bnr_encode_wrapper(a429_word_t *word, const a429_encode
     if (e != A429_ERR_NO)
         return e;
 
+    if ((dict->encoding.begin + dict->encoding.width - 1U) < A429_SSM_START_BIT)
+
+        a429_set_ssm(&temp_word, params->ssm.ssm_bnr);
+
+    if (dict->encoding.begin != A429_SDI_BEGIN)
+
+        a429_set_sdi(&temp_word, params->sdi);
+
     a429_set_label(&temp_word, dict->label);
-    a429_set_sdi(&temp_word, params->sdi);
-    a429_set_ssm(&temp_word, params->ssm.ssm_bnr);
     *word = a429_apply_parity(temp_word);
     return A429_ERR_NO;
 }
@@ -63,8 +77,16 @@ static a429_error_t a429_bcd_decode_wrapper(a429_word_t word, a429_decode_result
     if (err != A429_ERR_NO)
         return err;
     result->payload.value = value + dict->offset;
-    result->sdi = a429_get_sdi(word);
-    result->ssm.ssm_bcd = a429_get_ssm(word);
+
+    if ((dict->encoding.begin + dict->encoding.width - 1U) < A429_SSM_START_BIT)
+        result->ssm.ssm_bcd = a429_get_ssm(word); // using ssm
+    else
+        result->ssm.ssm_bcd = A429_SSM_BCD_NOT_USE;
+
+    if (dict->encoding.begin != A429_SDI_BEGIN)
+        result->sdi = a429_get_sdi(word);
+    else
+        result->sdi = A429_SDI_NOT_USE;
 
     return A429_ERR_NO;
 }
@@ -82,12 +104,18 @@ static a429_error_t a429_bcd_encode_wrapper(a429_word_t *word, const a429_encode
         return e;
 
     a429_set_label(&temp_word, dict->label);
-    a429_set_sdi(&temp_word, params->sdi);
-    a429_set_ssm(&temp_word, params->ssm.ssm_bcd);
+    if ((dict->encoding.begin + dict->encoding.width - 1U) < A429_SSM_START_BIT)
+        a429_set_ssm(&temp_word, params->ssm.ssm_bcd);
+
+    if (dict->encoding.begin != A429_SDI_BEGIN)
+        a429_set_sdi(&temp_word, params->sdi);
+
     *word = a429_apply_parity(temp_word);
 
     return A429_ERR_NO;
 }
+
+#include <stdio.h>
 
 static a429_error_t a429_disc_decode_wrapper(a429_word_t word, a429_decode_result_t *result,
                                              const a429_label_dictionary_t *dict)
@@ -103,8 +131,17 @@ static a429_error_t a429_disc_decode_wrapper(a429_word_t word, a429_decode_resul
     uint32_t state = a429_get_discrete_field(word, dict->encoding.begin, dict->encoding.width);
 
     result->payload.discrete = state;
-    result->sdi = a429_get_sdi(word);
-    result->ssm.ssm_disc = a429_get_ssm(word);
+
+    if ((dict->encoding.begin + dict->encoding.width - 1U) < A429_SSM_START_BIT)
+        result->ssm.ssm_disc = a429_get_ssm(word);
+    else
+        result->ssm.ssm_disc = A429_SSM_DISC_NOT_USE;
+
+    if (dict->encoding.begin != A429_SDI_BEGIN)
+        result->sdi = a429_get_sdi(word);
+    else
+        result->sdi = A429_SDI_NOT_USE;
+
     return err;
 }
 
@@ -116,8 +153,11 @@ static a429_error_t a429_disc_encode_wrapper(a429_word_t *word, const a429_encod
     a429_word_t temp_word = 0;
     a429_set_discrete_field(&temp_word, params->payload.discrete, dict->encoding.begin, dict->encoding.width);
     a429_set_label(&temp_word, dict->label);
-    a429_set_sdi(&temp_word, params->sdi);
-    a429_set_ssm(&temp_word, params->ssm.ssm_disc);
+    if ((dict->encoding.begin + dict->encoding.width - 1U) < A429_SSM_START_BIT)
+        a429_set_ssm(&temp_word, params->ssm.ssm_disc);
+
+    if (dict->encoding.begin != A429_SDI_BEGIN)
+        a429_set_sdi(&temp_word, params->sdi);
     *word = a429_apply_parity(temp_word);
     return A429_ERR_NO;
 }
