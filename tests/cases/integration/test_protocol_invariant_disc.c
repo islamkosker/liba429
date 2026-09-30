@@ -6,16 +6,16 @@
 void setUp(void) {}
 void tearDown(void) {}
 
-void test_protocol_invariant_disc_data(void)
+void protocol_invariant_disc(uint8_t label_idx, a429_ssm_disc_t ssm, a429_sdi_t sdi)
 {
-    a429_label_dictionary_t dictionary = GET_TABLE_ELEM(a429_table, TEST_DATA + 2);
+    a429_label_dictionary_t dictionary = GET_TABLE_ELEM(a429_table, label_idx);
 
     a429_encode_params_t params = {
         .payload.discrete = random_value_disc(dictionary.encoding.width,
                                               false, false),
 
-        .sdi = A429_SDI_ALL,
-        .ssm.ssm_disc = A429_SSM_DISC_NORMAL};
+        .sdi = sdi,
+        .ssm.ssm_disc = ssm};
 
     a429_decode_result_t res = {0};
 
@@ -27,90 +27,29 @@ void test_protocol_invariant_disc_data(void)
     e = a429_decode_word(word, &res, &a429_table);
     TEST_ASSERT_EQUAL(A429_ERR_NO, e);
 
-    TEST_ASSERT_DOUBLE_WITHIN(dictionary.resolution, params.payload.discrete, res.payload.discrete);
-    TEST_ASSERT_EQUAL(params.sdi, res.sdi);
-    TEST_ASSERT_EQUAL(A429_SSM_DISC_NORMAL, res.ssm.ssm_disc);
+    TEST_ASSERT_EQUAL_UINT32(params.payload.discrete, res.payload.discrete);
+    TEST_ASSERT_EQUAL(sdi, res.sdi);
+    TEST_ASSERT_EQUAL(ssm, res.ssm.ssm_disc);
+}
+// 32:test_protocol_invariant_disc_data_ssm:FAIL: Expected 4 Was 0
+void test_protocol_invariant_disc_data(void)
+{
+    protocol_invariant_disc(TEST_DATA + 2, A429_SSM_DISC_NORMAL, A429_SDI_ALL);
 }
 
 void test_protocol_invariant_disc_data_ssm(void)
 {
-
-    a429_label_dictionary_t dictionary = GET_TABLE_ELEM(a429_table, TEST_DATA_SSM + 2);
-
-    a429_encode_params_t params = {
-        .payload.discrete = random_value_disc(dictionary.encoding.width,
-                                              false, false),
-
-        .sdi = A429_SDI_ALL,
-        .ssm.ssm_disc = A429_SSM_DISC_NOT_USE};
-
-    a429_decode_result_t res = {0};
-
-    a429_error_t e;
-    a429_word_t word = 0;
-    e = a429_encode_word(dictionary.label, &word, &params, &a429_table);
-    TEST_ASSERT_EQUAL(A429_ERR_NO, e);
-
-    e = a429_decode_word(word, &res, &a429_table);
-    TEST_ASSERT_EQUAL(A429_ERR_NO, e);
-
-    TEST_ASSERT_DOUBLE_WITHIN(dictionary.resolution, params.payload.discrete, res.payload.discrete);
-    TEST_ASSERT_EQUAL(params.sdi, res.sdi);
-    TEST_ASSERT_EQUAL(A429_SSM_DISC_NOT_USE, res.ssm.ssm_disc);
+    protocol_invariant_disc(TEST_DATA_SSM + 2, A429_SSM_DISC_NOT_USE, A429_SDI_ALL);
 }
 
 void test_protocol_invariant_disc_data_sdi(void)
 {
-
-    a429_label_dictionary_t dictionary = GET_TABLE_ELEM(a429_table, TEST_DATA_SDI + 2);
-
-    a429_encode_params_t params = {
-        .payload.discrete = random_value_disc(dictionary.encoding.width,
-                                              false, false),
-
-        .sdi = A429_SDI_NOT_USE,
-        .ssm.ssm_disc = A429_SSM_DISC_NORMAL};
-
-    a429_decode_result_t res = {0};
-
-    a429_error_t e;
-    a429_word_t word = 0;
-    e = a429_encode_word(dictionary.label, &word, &params, &a429_table);
-    TEST_ASSERT_EQUAL(A429_ERR_NO, e);
-
-    e = a429_decode_word(word, &res, &a429_table);
-    TEST_ASSERT_EQUAL(A429_ERR_NO, e);
-
-    TEST_ASSERT_DOUBLE_WITHIN(dictionary.resolution, params.payload.discrete, res.payload.discrete);
-    TEST_ASSERT_EQUAL(res.sdi, A429_SDI_NOT_USE);
-    TEST_ASSERT_EQUAL(params.ssm.ssm_disc, res.ssm.ssm_disc);
+    protocol_invariant_disc(TEST_DATA_SDI + 2, A429_SSM_DISC_NORMAL, A429_SDI_NOT_USE);
 }
 
 void test_protocol_invariant_disc_data_sdi_ssm(void)
 {
-
-    a429_label_dictionary_t dictionary = GET_TABLE_ELEM(a429_table, TEST_DATA_SDI_SSM + 2);
-
-    a429_encode_params_t params = {
-        .payload.discrete = random_value_disc(dictionary.encoding.width,
-                                              false, false),
-
-        .sdi = A429_SDI_NOT_USE,
-        .ssm.ssm_disc = A429_SSM_DISC_NOT_USE};
-
-    a429_decode_result_t res = {0};
-
-    a429_error_t e;
-    a429_word_t word = 0;
-    e = a429_encode_word(dictionary.label, &word, &params, &a429_table);
-    TEST_ASSERT_EQUAL(A429_ERR_NO, e);
-
-    e = a429_decode_word(word, &res, &a429_table);
-    TEST_ASSERT_EQUAL(A429_ERR_NO, e);
-
-    TEST_ASSERT_DOUBLE_WITHIN(dictionary.resolution, res.payload.discrete, params.payload.discrete);
-    TEST_ASSERT_EQUAL(res.sdi, A429_SDI_NOT_USE);
-    TEST_ASSERT_EQUAL(A429_SSM_DISC_NOT_USE, res.ssm.ssm_disc);
+    protocol_invariant_disc(TEST_DATA_SDI_SSM + 2, A429_SSM_DISC_NOT_USE, A429_SDI_NOT_USE);
 }
 
 int main(void)
