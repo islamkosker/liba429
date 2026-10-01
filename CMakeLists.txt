@@ -60,6 +60,9 @@ else()
     set(ACTIVE_DIR ${CMAKE_SOURCE_DIR}/.build/test)
 endif()
 
+# Create .build directory if it doesn't exist
+file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/.build)
+
 add_custom_target(set_active ALL
     COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_SOURCE_DIR}/.build/active
     COMMAND ${CMAKE_COMMAND} -E create_symlink ${ACTIVE_DIR} ${CMAKE_SOURCE_DIR}/.build/active
