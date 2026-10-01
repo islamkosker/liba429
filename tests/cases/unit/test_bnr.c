@@ -21,26 +21,16 @@ void test_bnr_invariant_randomized(void)
     a429_error_t err_code = A429_ERR_NO;
     a429_encode_bnr(&test_mock_word.word, test_mock_word.value, test_mock_word.payload_begin,
                     test_mock_word.payload_width, test_mock_word.scale, &err_code);
-    if (err_code)
-    {
-      char message[512];
-      snprintf(message, sizeof(message),
-               ":>> status = %d seed = %d iter = %d value = %f", err_code, test_seed, i, test_mock_word.value);
 
-      TEST_FAIL_MESSAGE(message);
-    }
+    if (err_code)
+      TEST_FAIL();
 
     double test_value =
         a429_decode_bnr(test_mock_word.word, test_mock_word.payload_begin, test_mock_word.payload_width,
                         test_mock_word.scale, &err_code);
-    if (err_code)
-    {
-      char message[512];
-      snprintf(message, sizeof(message),
-               ":>> status = %d seed = %d iter = %d value = %f", err_code, test_seed, i, test_mock_word.value);
 
-      TEST_FAIL_MESSAGE(message);
-    }
+    if (err_code)
+      TEST_FAIL();
 
     TEST_ASSERT_DOUBLE_WITHIN(test_mock_word.resolution, test_mock_word.value, test_value);
   }
