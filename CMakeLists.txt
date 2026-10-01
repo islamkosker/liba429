@@ -30,6 +30,15 @@ target_compile_options(a429 PRIVATE
     -Wall -Wextra -Wpedantic
 )
 
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_custom_command(TARGET a429 POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "$<TARGET_FILE:a429>"
+            "${CMAKE_SOURCE_DIR}/example/liba429.a"
+        COMMENT "Copying release liba429.a to example"
+    )
+endif()
+
 # -------------------------
 # TEST FLAG (FIXED NAME)
 # -------------------------
@@ -46,6 +55,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(ACTIVE_DIR ${CMAKE_SOURCE_DIR}/.build/debug)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     set(ACTIVE_DIR ${CMAKE_SOURCE_DIR}/.build/release)
+    
 else()
     set(ACTIVE_DIR ${CMAKE_SOURCE_DIR}/.build/test)
 endif()

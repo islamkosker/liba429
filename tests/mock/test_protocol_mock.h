@@ -17,8 +17,6 @@
 
 #define DEFAULT_BIT_TIME 100
 
-#define TEST_RAND_MAX 0x1387F
-
 #define TEST_SCALE 1.0
 #define TEST_OFFSET 0.0
 #define TEST_RESOLUTION 0.01
@@ -72,7 +70,7 @@ const a429_dictionary_table_t a429_table = {
 
 #define GET_TABLE_ELEM(table, idx) (*(table)[idx])
 
-const unsigned long long large_rand()
+unsigned long long large_rand()
 {
     unsigned long long r = 0;
     for (int i = 0; i < 5; i++)
@@ -111,10 +109,10 @@ static inline double random_value_bcd(uint8_t width, double resolution)
     }
     uint32_t raw_bcd_int = (uint32_t)(large_rand() % (max_bcd_int + 1U));
 
-    double value = (double)raw_bcd_int * resolution;
+    return (double)raw_bcd_int * resolution;
 }
 
-static inline double const random_value_bnr(uint8_t width, double scale)
+static inline double random_value_bnr(uint8_t width, double scale)
 {
     uint32_t capacity = UINT32_C(1) << (width - 1U);
     uint32_t max_positive = capacity - UINT32_C(1);

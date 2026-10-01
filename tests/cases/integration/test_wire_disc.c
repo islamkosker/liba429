@@ -26,8 +26,8 @@ static void disc_wire_roundtrip(uint8_t label_idx, a429_ssm_disc_t ssm, a429_sdi
 
     wire_data = a429_pack_word(tx_word);
     rx_word = a429_unpack_word(wire_data);
-
-    e = a429_decode_word(rx_word, &rx_result, &a429_table);
+    uint8_t out_label = 0;
+    e = a429_decode_word(rx_word, &rx_result, &a429_table, &out_label);
     TEST_ASSERT_EQUAL(A429_ERR_NO, e);
 
     TEST_ASSERT_EQUAL_UINT32(tx_params.payload.discrete, rx_result.payload.discrete);

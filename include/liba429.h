@@ -4,6 +4,13 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#define A429_DATA_BEGIN 11U
+#define A429_SDI_BEGIN 9U
+#define A429_DEFAULT_DATA_WIDTH 19
+#define A429_DATA_SSM_WIDTH 21U
+#define A429_DATA_SDI_WIDTH A429_DATA_SSM_WIDTH
+#define A429_MAX_PAYLOAD_WIDTH 23U
+
 typedef uint32_t a429_word_t;
 typedef uint32_t a429_wire_data_t;
 typedef bool a429_discrete_t;
@@ -169,9 +176,41 @@ typedef struct
 typedef const a429_label_dictionary_t *a429_dictionary_table_t[A429_LABEL_COUNT];
 
 a429_error_t a429_decode_word(a429_word_t word, a429_decode_result_t *result,
-                              const a429_dictionary_table_t *table);
+                              const a429_dictionary_table_t *table, uint8_t *out_label);
 
 a429_error_t a429_encode_word(uint8_t label, a429_word_t *out_word, const a429_encode_params_t *params,
                               const a429_dictionary_table_t *table);
+
+/**
+
+* @brief Converts a hardware-format ARINC 429 word into software format.
+*
+* Reverses the 8-bit Label field while leaving the remaining payload
+* (bits 9-32) unchanged. This converts a word received from hardware
+* into the software representation used by the library.
+*
+* @param wire_data 32-bit ARINC 429 word in hardware format.
+* @return 32-bit ARINC 429 word in software format.
+*
+* @note Only the Label field (bits 1-8) is modified. All other bits are
+* copied unchanged.
+  */
+a429_word_t a429_unpack_word(a429_wire_data_t wire_data);
+
+/**
+
+* @brief Converts a software-format ARINC 429 word into hardware format.
+*
+* Reverses the 8-bit Label field while leaving the remaining payload
+* (bits 9-32) unchanged. This converts a software-format word into the
+* representation expected by ARINC 429 hardware.
+*
+* @param word 32-bit ARINC 429 word in software format.
+* @return 32-bit ARINC 429 word in hardware format.
+*
+* @note Only the Label field (bits 1-8) is modified. All other bits are
+* copied unchanged.
+  */
+a429_wire_data_t a429_pack_word(a429_word_t word);
 
 #endif /*LIBA429_H*/

@@ -26,8 +26,8 @@ static void bcd_wire_roundtrip(uint8_t label_idx, a429_ssm_bcd_t ssm, a429_sdi_t
 
     wire_data = a429_pack_word(tx_word);
     rx_word = a429_unpack_word(wire_data);
-
-    e = a429_decode_word(rx_word, &rx_result, &a429_table);
+    uint8_t out_label = 0;
+    e = a429_decode_word(rx_word, &rx_result, &a429_table, &out_label);
     TEST_ASSERT_EQUAL(A429_ERR_NO, e);
 
     TEST_ASSERT_DOUBLE_WITHIN(dictionary.resolution, tx_params.payload.value, rx_result.payload.value);

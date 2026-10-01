@@ -23,8 +23,8 @@ void protocol_invariant_bcd(uint8_t label_idx, a429_ssm_bcd_t ssm, a429_sdi_t sd
     a429_word_t word = 0;
     e = a429_encode_word(dictionary.label, &word, &params, &a429_table);
     TEST_ASSERT_EQUAL(A429_ERR_NO, e);
-
-    e = a429_decode_word(word, &res, &a429_table);
+    uint8_t out_label = 0;
+    e = a429_decode_word(word, &res, &a429_table, &out_label);
     TEST_ASSERT_EQUAL(A429_ERR_NO, e);
 
     TEST_ASSERT_DOUBLE_WITHIN(dictionary.resolution, params.payload.value, res.payload.value);
