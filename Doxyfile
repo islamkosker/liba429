@@ -1,0 +1,74 @@
+#---------------------------------------------------------------------------
+# Project
+#---------------------------------------------------------------------------
+
+PROJECT_NAME           = "liba429"
+PROJECT_NUMBER         = "0.1.0"
+PROJECT_BRIEF          = "Lightweight, hardware-independent ARINC 429 C library"
+
+OUTPUT_DIRECTORY       = docs/doxygen
+
+OUTPUT_LANGUAGE        = English
+
+OPTIMIZE_OUTPUT_FOR_C  = YES
+TYPEDEF_HIDES_STRUCT   = YES
+
+
+#---------------------------------------------------------------------------
+# Input
+#---------------------------------------------------------------------------
+
+INPUT                  = include src
+
+FILE_PATTERNS          = *.h \
+                         *.c
+
+RECURSIVE              = YES
+
+EXCLUDE                = test example
+
+
+#---------------------------------------------------------------------------
+# Extraction
+#---------------------------------------------------------------------------
+
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+
+SHOW_INCLUDE_FILES     = YES
+SOURCE_BROWSER         = YES
+
+
+#---------------------------------------------------------------------------
+# Documentation
+#---------------------------------------------------------------------------
+
+GENERATE_HTML           = YES
+GENERATE_LATEX          = NO
+
+HTML_OUTPUT             = html
+
+FULL_PATH_NAMES         = NO
+STRIP_FROM_PATH         = .
+
+
+#---------------------------------------------------------------------------
+# Warnings
+#---------------------------------------------------------------------------
+
+WARNINGS                = YES
+WARN_IF_UNDOCUMENTED    = YES
+WARN_IF_DOC_ERROR       = YES
+
+QUIET                   = NO
+
+
+#---------------------------------------------------------------------------
+# Diagrams
+#---------------------------------------------------------------------------
+
+HAVE_DOT               = NO
+CLASS_DIAGRAMS          = NO
+CALL_GRAPH             = NO
+CALLER_GRAPH           = NO

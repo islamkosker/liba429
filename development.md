@@ -1,263 +1,250 @@
-### liba429 Development
+# liba429 Development Status
 
-This document tracks the implementation status of the library.
-
----
-
-### Current Focus
-
-**Status:** 🚧 In Progress Planned
-
-### Testing
-
-**Status:** 🚧 In Progress Planned
-
-#### Core
-
-- [ ] Word API
-- [x] Parity
-- [ ] Bit reversal
-
-#### Decoder
-
-- [x] BNR
-- [x] BCD
-- [ ] Discrete
-- [ ] SSM
-
-#### Encoder
-
-- [x] BNR
-- [x] BCD
-- [ ] Discrete
-- [ ] Parity generation
-
-#### Integration
-
-- [ ] Encode → Decode
-- [ ] Decode → Encode
-- [ ] Hardware compatibility
-- [ ] Reference ARINC vectors
-
-#### Edge Cases & Error Handling
-
-- [ ] Invalid BCD digits handling (Hex A-F limits)
-- [ ] BNR out-of-bounds limits (exceeding Scale Factor)
-- [ ] Null word / Empty bus handling
+This document tracks the current implementation status and planned work for `liba429`.
 
 ---
 
-### Core
+## Current Status
 
-#### Types
-
-**Status:** ✅ Complete
-**Files**
-
-- include/types.h
-  **Implemented**
-- [x] Core library types
-- [x] ARINC 429 word types
-- [x] SSM enumerations
+**Core library:** ✅ Implemented
+**High-level API:** ✅ Implemented
+**Encoding / Decoding:** ✅ Implemented
+**Dictionary-driven configuration:** ✅ Implemented
+**Testing:** ✅ Implemented
+**Documentation:** 🚧 In Progress
 
 ---
 
-#### Word API
+## Core
 
-**Status:** ✅ Complete
-**Files**
+### Word Representation
 
-- include/word.h
-  **Implemented**
-- [x] Label getter
-- [x] SDI getter
-- [x] Data getter
-- [x] SSM getter
-- [x] Parity getter
+* [x] ARINC 429 word type
+* [x] Label field access
+* [x] SDI field access
+* [x] Data field access
+* [x] SSM field access
+* [x] Parity field access
+* [x] Configurable payload extraction
+* [x] Configurable payload insertion
 
----
+### Parity
 
-#### Parity
+* [x] Odd parity calculation
+* [x] Parity verification
+* [x] Parity application
 
-**Status:** ✅ Complete
-**Files**
+### Label Representation
 
-- include/parity.h
-  **Implemented**
-- [x] Odd parity verification
-- [x] a429_check_parity()
-
----
-
-#### Bit Reversal
-
-**Status:** ✅ Complete
-**Planned**
-
-- [x] 256-entry lookup table
-- [x] Hardware ↔ Logical label conversion
-- [x] Public API
+* [x] Label bit reversal
+* [x] Software ↔ wire-level Label conversion
+* [x] Pack / unpack API
 
 ---
 
-#### Pack / Unpack
+## Encoding
 
-**Status:** ✅ Complete
-**Planned**
+### BNR
 
-- [x] Hardware → Logical word conversion
-- [x] Logical → Hardware word conversion
+* [x] Configurable payload width
+* [x] Two's-complement encoding
+* [x] Scale factor
+* [x] Resolution
+* [x] Offset
+* [x] Range checking
 
----
+### BCD
 
-### Decoders
+* [x] Packed BCD encoding
+* [x] Variable payload width
+* [x] Partial most-significant digit support
+* [x] Resolution handling
+* [x] Range checking
 
-Status: ✅ Complete
+### Discrete
 
-#### BNR
+* [x] Discrete payload encoding
+* [x] Configurable payload width
 
-- [x] Two's complement decoding
-- [x] Configurable bit width
-- [x] Scale factor support
+### Word Fields
 
-#### BCD
-
-- [x] Packed BCD decoding
-- [x] 3-bit MSB support
-- [x] Variable digit count
-
-#### Discrete
-
-- [x] Bit extraction
-- [x] Individual discrete decoding
-
-#### SSM
-
-- [x] BNR interpretation
-- [x] BCD interpretation
-- [x] Discrete interpretation
+* [x] Label
+* [x] SDI
+* [x] Data
+* [x] SSM
+* [x] Parity
 
 ---
 
-### Encoders
+## Decoding
+
+### BNR
+
+* [x] Two's-complement decoding
+* [x] Configurable payload width
+* [x] Scale factor
+* [x] Resolution
+* [x] Offset
+
+### BCD
+
+* [x] Packed BCD decoding
+* [x] Variable payload width
+* [x] Partial most-significant digit support
+* [x] Invalid BCD detection
+
+### Discrete
+
+* [x] Discrete payload extraction
+* [x] Configurable payload width
+
+### SSM
+
+* [x] BNR SSM interpretation
+* [x] BCD SSM interpretation
+* [x] Discrete SSM interpretation
+* [x] Library-level `NOT_USE` semantics
+
+### SDI
+
+* [x] SDI extraction
+* [x] SDI encoding
+* [x] Configurable SDI usage through payload layout
+
+---
+
+## Label Dictionary
 
 **Status:** ✅ Complete
 
-#### Word Fields
+### Descriptor
 
-- [x] Label setter
-- [x] SDI setter
-- [x] Data setter
-- [x] SSM setter
+* [x] Label
+* [x] Equipment identifier
+* [x] Name
+* [x] Unit
+* [x] Encoding type
+* [x] Payload begin position
+* [x] Payload width
+* [x] Resolution
+* [x] Scale
+* [x] Offset
+* [x] Bit time metadata
 
-#### BNR
+### Dictionary Table
 
-- [x] Float → BNR
-
-#### BCD
-
-- [x] Integer → Packed BCD
-
-#### Discrete
-
-- [x] Bit packing
-
-#### Parity
-
-- [x] a429_apply_parity()
+* [x] Static dictionary table
+* [x] Direct Label-indexed lookup
+* [x] Designated initializers
+* [x] BNR dictionary macro
+* [x] BCD dictionary macro
+* [x] Discrete dictionary macro
 
 ---
 
-### Label Dictionary
+## High-Level API
 
 **Status:** ✅ Complete
 
-#### Descriptor
-
-- [x] Label
-- [x] Name
-- [x] Encoding
-- [x] Bit width
-- [x] Resolution
-- [x] Offset
-- [x] Unit
-
-#### API
-
-- [x] a429_find_label() (O(1))
+* [x] Dictionary-driven encoding
+* [x] Dictionary-driven decoding
+* [x] Automatic codec selection
+* [x] Label validation
+* [x] Error reporting
 
 ---
 
-### High-Level API
+## Testing
 
 **Status:** ✅ Complete
 
-- [x] Automatic decoder
-- [x] Automatic encode
+### Unit Tests
+
+* [x] Word field operations
+* [x] Parity
+* [x] Label bit reversal
+* [x] BNR encoding
+* [x] BNR decoding
+* [x] BCD encoding
+* [x] BCD decoding
+* [x] Discrete encoding
+* [x] Discrete decoding
+* [x] SSM handling
+
+### Integration Tests
+
+* [x] Encode → Decode
+* [x] Decode → Encode
+* [x] Dictionary-driven protocol flow
+* [x] Configurable payload layouts
+
+### Edge Cases
+
+* [x] Invalid BCD digits
+* [x] BNR range limits
+* [x] Invalid payload widths
+* [x] Invalid labels
+* [x] Invalid arguments
+* [x] Parity errors
 
 ---
 
-### Testing
+## Documentation
 
-**Status:** 🚧 In Progress Planned
+**Status:** 🚧 In Progress
 
-#### Core
-
-- [ ] Word API
-- [x] Parity
-- [ ] Bit reversal
-
-#### Decoder
-
-- [x] BNR
-- [x] BCD
-- [ ] Discrete
-- [ ] SSM
-
-#### Encoder
-
-- [x] BNR
-- [x] BCD
-- [ ] Discrete
-- [ ] Parity generation
-
-#### Integration
-
-- [ ] Encode → Decode
-- [ ] Decode → Encode
-- [ ] Hardware compatibility
-- [ ] Reference ARINC vectors
-
-#### Edge Cases & Error Handling
-
-- [ ] Invalid BCD digits handling (Hex A-F limits)
-- [ ] BNR out-of-bounds limits (exceeding Scale Factor)
-- [ ] Null word / Empty bus handling
+* [x] README
+* [x] Architecture documentation
+* [x] Encoding documentation
+* [x] API documentation
+* [x] Testing documentation
+* [x] Complete Doxygen comments
+* [x] Generate API reference
+* [ ] Documentation website
 
 ---
 
-### Williamsburg Protocol (Optional)
+## Future Protocol Support
 
-**Status:** ⏳ Planned
+### Williamsburg Protocol
 
-- [ ] RTS
-- [ ] CTS
-- [ ] ACK
-- [ ] SOT
-- [ ] EOT
-- [ ] State machine
-- [ ] Block transfer
+**Status:** ⏳ Planned / Optional
+
+The Williamsburg protocol layer is planned as a future extension.
+It is intentionally kept separate from the core ARINC 429 word
+encoding and decoding functionality.
+
+* [ ] RTS
+* [ ] CTS
+* [ ] ACK
+* [ ] SOT
+* [ ] EOT
+* [ ] State machine
+* [ ] Block transfer
 
 ---
 
-### Future Ideas
+## Future Ideas
 
-- [ ] Pretty printer
-- [ ] CSV label importer
-- [ ] JSON label importer
-- [ ] YAML label importer
-- [ ] Signal monitor
-- [ ] Logging utilities
-- [ ] PCAP export
-- [ ] Benchmark suite
-- [ ] Documentation website
+The following items are outside the current core scope and may be considered in future versions:
+
+* [ ] Pretty printer
+* [ ] CSV label importer
+* [ ] JSON label importer
+* [ ] YAML label importer
+* [ ] Signal monitor
+* [ ] Logging utilities
+* [ ] PCAP export
+* [ ] Benchmark suite
+* [ ] Documentation website
+
+---
+
+## Scope
+
+`liba429` focuses on ARINC 429 word representation, encoding, decoding,
+dictionary-driven configuration, and validation.
+
+Protocol-level communication features and higher-level tooling are
+considered separate extensions and are not part of the current core
+scope.
