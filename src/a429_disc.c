@@ -1,7 +1,6 @@
 #include "a429_disc.h"
 #include "a429_word.h"
 
-#include <stdint.h>
 #include <limits.h>
 
 uint32_t a429_get_discrete_field(a429_word_t word, uint8_t payload_begin, uint8_t payload_width)

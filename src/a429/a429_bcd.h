@@ -2,9 +2,7 @@
 #define A429_BCD_H
 
 #include <stdint.h>
-#include "a429_types.h"
-#include "a429_error.h"
-
+#include <liba429.h>
 /**
  * @brief Decodes a BCD (Binary code Decimal) formatted ARINC 429 word into a double value.
  * @param word         The 32-bit raw ARINC word.

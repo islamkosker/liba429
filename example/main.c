@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <time.h>
 
-#define EXAMPLE_SCALE 1.0
+#define EXAMPLE_SCALE 79999
 #define EXAMPLE_OFFSET 0.0
-#define EXAMPLE_RESOLUTION 0.01
+#define EXAMPLE_RESOLUTION 0.1
 #define EXAMPLE_BIT_TIME 100
 
 #define LABEL_BCD 10
@@ -15,9 +15,9 @@
 #define GET_TABLE_ELEM(table, idx) (*(table)[idx])
 
 static const a429_dictionary_table_t a429_example_table = {
-    A429_BCD(LABEL_BCD, LABEL_BCD, "bcd_100", "unit", A429_DATA_BEGIN, A429_DEFAULT_DATA_WIDTH, EXAMPLE_BIT_TIME, EXAMPLE_RESOLUTION, EXAMPLE_SCALE, EXAMPLE_OFFSET),
-    A429_BNR(LABEL_BNR, LABEL_BNR, "bnr_100", "unit", A429_DATA_BEGIN, A429_DEFAULT_DATA_WIDTH, EXAMPLE_BIT_TIME, EXAMPLE_RESOLUTION, EXAMPLE_SCALE, EXAMPLE_OFFSET),
-    A429_DISC(LABEL_DISC, LABEL_DISC, "disc_100", "unit", A429_DATA_BEGIN, A429_DEFAULT_DATA_WIDTH, EXAMPLE_BIT_TIME, EXAMPLE_RESOLUTION, EXAMPLE_SCALE, EXAMPLE_OFFSET),
+    A429_BCD(LABEL_BCD, LABEL_BCD, "FUEL_QUANTITY", "lb", A429_DATA_BEGIN, A429_DEFAULT_DATA_WIDTH, EXAMPLE_BIT_TIME, EXAMPLE_RESOLUTION, EXAMPLE_SCALE, EXAMPLE_OFFSET),
+    A429_BNR(LABEL_BNR, LABEL_BNR, "VERTICAL_SPEED", "ft/min", A429_DATA_BEGIN, A429_DEFAULT_DATA_WIDTH, EXAMPLE_BIT_TIME, EXAMPLE_RESOLUTION, EXAMPLE_SCALE, EXAMPLE_OFFSET),
+    A429_DISC(LABEL_DISC, LABEL_DISC, "LANDING_GEAR_STATUS", "state", A429_DATA_BEGIN, A429_DEFAULT_DATA_WIDTH, EXAMPLE_BIT_TIME, EXAMPLE_RESOLUTION, EXAMPLE_SCALE, EXAMPLE_OFFSET),
 
 };
 
@@ -26,7 +26,7 @@ static unsigned long long large_rand(void)
     unsigned long long r = 0;
     for (int i = 0; i < 5; i++)
     {
-        r = (r << 15) | (rand() & 0x7FFF);
+        r = (r << 15) | (rand() & RAND_MAX);
     }
     return r;
 }
@@ -65,12 +65,10 @@ static inline double random_value_bcd(uint8_t width, double resolution)
 
 static inline double random_value_bnr(uint8_t width, double scale)
 {
-    uint32_t capacity = UINT32_C(1) << (width - 1U);
-    uint32_t max_positive = capacity - UINT32_C(1);
-    double resolution = scale / (double)capacity;
-    double max_positive_value = (double)max_positive * resolution;
-    double random_multiplier = ((double)rand() / (double)RAND_MAX) * 2.0 - 1.0;
-    return random_multiplier * max_positive_value;
+    double resolution = scale / (double)(UINT32_C(1) << width);
+    uint32_t max_steps = (UINT32_C(1) << width) - 1;
+    uint32_t random_step = (uint32_t)rand() % (max_steps + 1U);
+    return (double)random_step * resolution;
 }
 
 static inline uint32_t random_value_disc(uint8_t width)
@@ -96,15 +94,15 @@ static a429_word_t sim_wire_out(a429_wire_data_t out)
 
 static void a429_basic_example(a429_encode_params_t *param, uint8_t label)
 {
-
+    a429_label_dictionary_t dict = GET_TABLE_ELEM(a429_example_table, label);
     a429_word_t word = 0;
     a429_error_t e = a429_encode_word(label, &word, param, &a429_example_table);
     if (e != A429_ERR_NO)
     {
-        printf("Encoding error %d\n", e);
+        printf("%s label Encoding error %d\n", dict.name, e);
         return;
     }
-    printf("Encoding successful [LABEL: %d]\n", label);
+    printf("Encoding successful [%s LABEL: %d]\n", dict.name, label);
     a429_wire_data_t wire_data = sim_wire_in(word);
 
     a429_word_t word_in = sim_wire_out(wire_data);
@@ -114,10 +112,15 @@ static void a429_basic_example(a429_encode_params_t *param, uint8_t label)
 
     if (e != A429_ERR_NO)
     {
-        printf("Decoding error %d\n", e);
+        printf("%s label Decoding error %d\n", dict.name, e);
         return;
     }
-    printf("Decoding successful [LABEL: %d]\n", out_label);
+    printf("Decoding successful [%s LABEL: %d]\n", dict.name, label);
+
+    if (label != LABEL_DISC)
+        printf("[%s label] encoeding value %f  decodeing value %f [%s] \n", dict.name, param->payload.value, same_result.payload.value, dict.unit);
+    else
+        printf("encoeding value %d decodeing value %d \n", param->payload.discrete, same_result.payload.discrete);
 
     printf("--------------------------------\n\n");
 }

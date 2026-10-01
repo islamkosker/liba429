@@ -1,5 +1,4 @@
 #include "a429_bnr.h"
-#include "a429_types.h"
 #include "a429_word.h"
 
 #include <math.h>

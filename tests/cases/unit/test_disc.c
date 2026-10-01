@@ -4,7 +4,8 @@
 
 #include "unity.h"
 #include "test_utils.h"
-
+#include <stdbool.h>
+#include <stdint.h>
 #define DATA_WIDTH 19
 static unsigned int test_seed;
 

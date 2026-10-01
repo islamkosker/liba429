@@ -1,9 +1,6 @@
-#include "a429_protocol.h"
-#include "a429_types.h"
-#include "a429_codec_types.h"
+#include "a429_codec.h"
 #include "a429_parity.h"
 #include "a429_word.h"
-#include "a429_codec.h"
 
 a429_error_t a429_decode_word(a429_word_t word, a429_decode_result_t *result,
                               const a429_dictionary_table_t *table, uint8_t *out_label)

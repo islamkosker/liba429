@@ -1,7 +1,7 @@
 #ifndef A429_WORD_H
 #define A429_WORD_H
 #include <stdint.h>
-#include "a429_types.h"
+#include "liba429.h"
 #define A429_LABEL_SHIFT 0U
 #define A429_SDI_SHIFT 8U
 #define A429_DATA_SHIFT 10U

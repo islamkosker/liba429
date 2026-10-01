@@ -1,4 +1,0 @@
-#ifndef LIBA429_UTILS
-#define LIBA429_UTILS
-
-#endif // LIBA429_UTILS
